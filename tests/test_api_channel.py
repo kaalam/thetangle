@@ -1,5 +1,6 @@
-import requests as http
-import pytest
+import pytest, requests
+
+from http_requests import get, put, delete
 
 
 def test_ChannelZmq():
