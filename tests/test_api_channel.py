@@ -15,25 +15,26 @@ def test_ChannelZmq():
 
 
 def test_ChannelBash():
-	a = 1
-
-	assert isinstance(a, int)
-
-	with pytest.raises(ZeroDivisionError):
-		b = a/0
-
-	assert 3*a == 3
+	a = get('//bash/exec/(&ls -la)')
+	assert isinstance(a, requests.models.Response)
+	assert a.status_code == 200
 
 
 def test_ChannelFile():
-	a = 1
+	a = get('//file&/tmp/new_folder;.new')
+	assert isinstance(a, requests.models.Response)
+	assert a.status_code == 200
 
-	assert isinstance(a, int)
+	n = put('//file&/tmp/new_folder/file.txt;', 'This is\nmultiline.')
+	assert n.status_code == 201
 
-	with pytest.raises(ZeroDivisionError):
-		b = a/0
+	a = delete('//file&/tmp/new_folder/file.txt;')
+	assert isinstance(a, requests.models.Response)
+	assert a.status_code == 200
 
-	assert 3*a == 3
+	a = delete('//file&/tmp/new_folder;')
+	assert isinstance(a, requests.models.Response)
+	assert a.status_code == 200
 
 
 def test_ChannelHttp():
@@ -45,3 +46,9 @@ def test_ChannelHttp():
 		b = a/0
 
 	assert 3*a == 3
+
+
+# test_ChannelBash()
+# test_ChannelZmq()
+# test_ChannelFile()
+# test_ChannelHttp()

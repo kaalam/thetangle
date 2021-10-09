@@ -26,14 +26,45 @@ def test_VolatileIndex():
 
 
 def test_VolatileQueue():
-	a = 1
+	a = get('//queue/test_q/hello')
+	assert isinstance(a, requests.models.Response)
+	assert a.status_code == 404
 
-	assert isinstance(a, int)
+	d = get('//queue/test_q/~10.new')
+	assert d.status_code == 200
 
-	with pytest.raises(ZeroDivisionError):
-		b = a/0
+	n = put('//queue/test_q/twenty~.20', 'What is 5*4?')
+	assert n.status_code == 201
 
-	assert 3*a == 3
+	n = put('//queue/test_q/five~.05', 'What is 7 - 2?')
+	assert n.status_code == 201
+
+	n = put('//queue/test_q/twelve~0.12', 'What comes after 11?')
+	assert n.status_code == 201
+
+	a = get('//queue/test_q/twenty')
+	assert a.status_code == 200 and a.text == 'What is 5*4?'
+
+	a = get('//queue/test_q/~lowest')
+	assert a.status_code == 200 and a.text == 'What is 7 - 2?'
+
+	a = get('//queue/test_q/~xhigh')
+	assert a.status_code == 200 and a.text == 'What is 5*4?'
+
+	a = get('//queue/test_q/~xhigh')
+	assert a.status_code == 200 and a.text == 'What comes after 11?'
+
+	a = get('//queue/test_q/~xhigh')
+	assert a.status_code == 200 and a.text == 'What is 7 - 2?'
+
+	a = get('//queue/test_q/~xhigh')
+	assert a.status_code == 404
+
+	d = delete('//queue/test_q')
+	assert d.status_code == 200
+
+	a = get('//queue/test_q/five')
+	assert a.status_code == 404
 
 
 def test_VolatileTree():
@@ -45,3 +76,9 @@ def test_VolatileTree():
 		b = a/0
 
 	assert 3*a == 3
+
+
+# test_VolatileDeque()
+# test_VolatileIndex()
+# test_VolatileQueue()
+# test_VolatileTree()
