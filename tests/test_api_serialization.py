@@ -70,7 +70,7 @@ def test_Serialization():
 	q = get('//deque/my_stack.new')
 	assert q.status_code == 200
 
-	a = get('//deque/m_stack/~push=//lmdb/test_serial/tens[@[3,5]]')
+	a = get('//deque/m_stack/~last=//lmdb/test_serial/tens[@[3,5]]')
 	assert a.status_code == 200
 
 	a = get('//deque/m_stack/~plast.text')
