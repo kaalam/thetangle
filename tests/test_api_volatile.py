@@ -78,7 +78,10 @@ def test_VolatileTree():
 	assert 3*a == 3
 
 
-# test_VolatileDeque()
-# test_VolatileIndex()
-# test_VolatileQueue()
-# test_VolatileTree()
+if __name__ == '__main__':
+	test_VolatileDeque()
+	test_VolatileIndex()
+	test_VolatileQueue()
+	test_VolatileTree()
+
+	print('\n\nDone.')

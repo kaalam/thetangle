@@ -48,7 +48,10 @@ def test_ChannelHttp():
 	assert 3*a == 3
 
 
-# test_ChannelBash()
-# test_ChannelZmq()
-# test_ChannelFile()
-# test_ChannelHttp()
+if __name__ == '__main__':
+	test_ChannelBash()
+	test_ChannelZmq()
+	test_ChannelFile()
+	test_ChannelHttp()
+
+	print('\n\nDone.')
