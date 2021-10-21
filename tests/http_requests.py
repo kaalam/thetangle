@@ -21,3 +21,12 @@ def delete(qq, remote = False):
 		return http.delete(REMOTE_URL + qq)
 
 	return http.delete(SERVER_URL + qq)
+
+def options(qq):
+	return http.options(SERVER_URL + qq)
+
+def head(qq):
+	return http.head(SERVER_URL + qq)
+
+def post(qq, tt):
+	return http.post(SERVER_URL + qq, data = tt)
