@@ -28,6 +28,15 @@ def test_AcrossNodes():
 	d = delete('///424x4//lmdb/test_dbi/twenty')
 	assert d.status_code == 200
 
+	d = delete('///424x4//lmdb/test_dbi/zx81')
+	assert d.status_code == 404
+
+	d = delete('//zz/test_dbi/zx81')
+	assert d.status_code == 503
+
+	d = delete('//file&/tmp/aa/bb/cc;')
+	assert d.status_code == 404
+
 	a = get('//lmdb/test_dbi/twenty')
 	assert a.status_code == 404
 
