@@ -67,6 +67,21 @@ def test_Serialization():
 	a = get('//lmdb/test_serial/s_tens')
 	assert a.status_code == 200 and a.text[:-1] == ret_tens
 
+	p = put('//lmdb/test_serial/slice.raw', ret_sli2)
+	assert p.status_code == 201
+
+	a = get('//lmdb/test_serial/slice.text')
+	assert a.status_code == 200 and a.text[:-1] == ret_sli2
+
+	a = get('//lmdb/test_serial/tupl')
+	assert a.status_code == 200 and len(a.content) > 64
+
+	p = put('//lmdb/test_serial/tup_src.text', a.content)
+	assert p.status_code == 201
+
+	a = get('//lmdb/test_serial/tup_src')
+	assert a.status_code == 200 and a.text[0] == '[' and a.text[-2] == ']'
+
 	q = get('//deque/my_stack.new')
 	assert q.status_code == 200
 
