@@ -15,7 +15,7 @@ def test_PutStaticAttributes():
 	assert n.status_code == 200
 
 	a = get('//lmdb/www/blk_blk123')
-	assert a.status_code == 200 and a.text[0:6] == '<html>'
+	assert a.status_code == 200 and a.text == '<html>\n<body>\n<h3>\nHello World!\n</h3>\n</body>\n</html>\n'
 
 	a = get('//lmdb/www/blk_blk123.attribute(4)')
 	assert a.status_code == 404
@@ -39,7 +39,7 @@ def test_PutStaticAttributes():
 	assert a.status_code == 200 and a.text == '/hello/index.html'
 
 	p = get('/hello/index.html')
-	assert p.status_code == 200 and p.text[0:6] == '<html>'
+	assert p.status_code == 200 and p.text == '<html>\n<body>\n<h3>\nHello World!\n</h3>\n</body>\n</html>\n'
 
 	a = delete('//lmdb/www/blk_blk123')
 	assert a.status_code == 200
