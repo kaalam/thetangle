@@ -17,10 +17,10 @@ def test_AcrossNodesBasic():
 	assert a.status_code == 200 and a.text == 'What is 5*4?'
 
 	a = get('//lmdb/test_dbi/twenty', remote = True)
-	assert a.status_code == 200
+	assert a.status_code == 200 and a.text == 'What is 5*4?'
 
 	a = get('//lmdb/test_dbi/five', remote = True)
-	assert a.status_code == 200
+	assert a.status_code == 200 and a.text == 'What is 7 - 2?'
 
 	a = get('///424x4//lmdb/test_dbi/five')
 	assert a.status_code == 200 and a.text == 'What is 7 - 2?'
@@ -60,10 +60,14 @@ def test_AcrossNodesBasic():
 
 
 def test_AcrossNodesAllRemoteRight():
+
 	q = get('//deque/my_stack.new')
 	assert q.status_code == 200
 
-	tupl = '("weights" : [[17, 170], [112, 54], [207, 149]], "author" : ["Billy"], "score" : [9.499999999999999556e-01])'
+	q = get('///424x4//deque/my_stack.new')
+	assert q.status_code == 200
+
+	tupl = '("weights" : [[17, 170], [112, 54], [207, 149]], "author" : ["Billy"], "score" : [0.95])'
 
 	a = put('//lmdb/www/a_tupl.raw', tupl)
 	assert a.status_code == 201
@@ -72,27 +76,114 @@ def test_AcrossNodesAllRemoteRight():
 	assert a.status_code == 200
 
 	a = get('//deque/my_stack/~plast.text')
-	assert a.status_code == 200 and a.text[:-1] == '[[17, 170], [112, 54], [207, 149]]'
+	assert a.status_code == 200 and a.text == '[[17, 170], [112, 54], [207, 149]]'
 
-	a = put('///424x4//lmdb/www/a_tupl.raw', tupl)
-	assert a.status_code == 201
+	a = get('//lmdb/www/a_tupl:author')
+	assert a.status_code == 200 and a.text == 'Billy'
+
+	a = get('//deque/my_stack/~last=//lmdb/www/a_tupl:score')
+	assert a.status_code == 200
+
+	a = get('//deque/my_stack/~plast.text')
+	assert a.status_code == 200 and a.text == '[9.499999999999999556e-01]'
+
+	a = get('///424x4//lmdb/www/a_tupl=//lmdb/www/a_tupl')
+	assert a.status_code == 200
+
+	b = get('//lmdb/www/a_tupl')
+	assert b.status_code == 200
+
+	r = get('//lmdb/www/a_tupl', remote = True)
+	assert r.status_code == 200 and b.text == r.text
+
+	t = get('///424x4//lmdb/www/a_tupl')
+	assert t.status_code == 200 and b.text == t.text
+
+	b = get('//lmdb/www/a_tupl:weights')
+	assert b.status_code == 200
+
+	r = get('//lmdb/www/a_tupl:weights', remote = True)
+	assert r.status_code == 200 and b.text[0:7] == r.text[0:7] and len(b.content) == len(r.content)		# Bytes before .created
+
+	r = get('///424x4//lmdb/www/a_tupl:weights')
+	assert r.status_code == 200 and b.text[0:7] == r.text[0:7] and len(b.content) == len(r.content)		# Bytes before .created
+
+	a = get('//deque/my_stack/~last=//lmdb/www/a_tupl:weights', remote = True)
+	assert a.status_code == 200
+
+	a = get('//deque/my_stack/~plast.text', remote = True)
+	assert a.status_code == 200 and a.text == '[[17, 170], [112, 54], [207, 149]]'
+
+	a = get('//lmdb/www/a_tupl:author', remote = True)
+	assert a.status_code == 200 and a.text == 'Billy'
+
+	a = get('//deque/my_stack/~last=//lmdb/www/a_tupl:score', remote = True)
+	assert a.status_code == 200
+
+	a = get('//deque/my_stack/~plast.text', remote = True)
+	assert a.status_code == 200 and a.text == '[9.499999999999999556e-01]'
 
 	a = get('//deque/my_stack/~last=///424x4//lmdb/www/a_tupl:weights')
 	assert a.status_code == 200
 
 	a = get('//deque/my_stack/~plast.text')
-	assert a.status_code == 200 and a.text[:-1] == '[[17, 170], [112, 54], [207, 149]]'
+	assert a.status_code == 200 and a.text == '[[17, 170], [112, 54], [207, 149]]'
 
+	a = get('///424x4//lmdb/www/a_tupl:author')
+	assert a.status_code == 200 and a.text == 'Billy'
 
+	a = put('///424x4//lmdb/www/a_tupl.raw', tupl)
+	assert a.status_code == 201
 
+	b = get('//lmdb/www/a_tupl')
+	assert b.status_code == 200
+
+	r = get('//lmdb/www/a_tupl', remote = True)
+	assert r.status_code == 200 and b.text[0:7] == r.text[0:7] and len(b.content) == len(r.content)		# Bytes before .created
+
+	t = get('///424x4//lmdb/www/a_tupl')
+	assert t.status_code == 200 and b.text[0:7] == t.text[0:7] and len(b.content) == len(t.content)		# Bytes before .created
+
+	b = get('//lmdb/www/a_tupl:weights')
+	assert b.status_code == 200
+
+	r = get('//lmdb/www/a_tupl:weights', remote = True)
+	assert r.status_code == 200 and b.text[0:7] == r.text[0:7] and len(b.content) == len(r.content)		# Bytes before .created
+
+	r = get('///424x4//lmdb/www/a_tupl:weights')
+	assert r.status_code == 200 and b.text[0:7] == r.text[0:7] and len(b.content) == len(r.content)		# Bytes before .created
+
+	a = get('//deque/my_stack/~last=//lmdb/www/a_tupl:weights', remote = True)
+	assert a.status_code == 200
+
+	a = get('//deque/my_stack/~plast.text', remote = True)
+	assert a.status_code == 200 and a.text == '[[17, 170], [112, 54], [207, 149]]'
+
+	a = get('//lmdb/www/a_tupl:author', remote = True)
+	assert a.status_code == 200 and a.text == 'Billy'
+
+	a = get('//deque/my_stack/~last=//lmdb/www/a_tupl:score', remote = True)
+	assert a.status_code == 200
+
+	a = get('//deque/my_stack/~plast.text', remote = True)
+	assert a.status_code == 200 and a.text == '[9.499999999999999556e-01]'
+
+	a = get('//deque/my_stack/~last=///424x4//lmdb/www/a_tupl:weights')
+	assert a.status_code == 200
+
+	a = get('//deque/my_stack/~plast.text')
+	assert a.status_code == 200 and a.text == '[[17, 170], [112, 54], [207, 149]]'
+
+	a = get('///424x4//lmdb/www/a_tupl:author')
+	assert a.status_code == 200 and a.text == 'Billy'
 
 	q = delete('//deque/my_stack')
 	assert q.status_code == 200
 
+	q = delete('///424x4//deque/my_stack')
+	assert q.status_code == 200
 
 
-#define APPLY_NOTHING					 0		///< Just an l_value with {///node}//base/entity or {///node}//base/entity/key
-#define APPLY_NAME						 1		///< //base/entity/key:name (Select an item form a Tuple by name)
 #define APPLY_URL						 2		///< //base& any_url_encoded_url ; (A call to http or file)
 #define APPLY_FUNCTION					 3		///< {///node}//base/entity/key(//r_base/r_entity/r_key) (A function call on a block.)
 #define APPLY_FUNCT_CONST				 4		///< //base/entity/key(& any_url_encoded_const) (A function call on a const.)
@@ -113,7 +204,6 @@ def test_AcrossNodesAllRemoteRight():
 #define APPLY_NEW_ENTITY				19		///< {///node}//base/entity.new (Create a new entity)
 #define APPLY_GET_ATTRIBUTE				20		///< {///node}//base/entity/key.attribute(123) (read attribute 123 with HTTP_GET)
 #define APPLY_SET_ATTRIBUTE				21		///< //base/entity/key.attribute(123)=& url_encoded ; (set attribute 123 with HTTP_GET)
-#define APPLY_JAZZ_INFO					22		///< /// Show the server info.
 
 
 
@@ -125,7 +215,7 @@ def test_AcrossNodesAllRemoteBoth():
 
 
 if __name__ == '__main__':
-	# test_AcrossNodesBasic()
+	test_AcrossNodesBasic()
 	test_AcrossNodesAllRemoteRight()
 	test_AcrossNodesAllRemoteLeft()
 	test_AcrossNodesAllRemoteBoth()
