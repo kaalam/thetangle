@@ -68,19 +68,69 @@ def test_ChannelFile():
 
 
 def test_ChannelHttp():
-	a = 1
+	a = get('//http&http://127.0.0.1:5000/test/capital/Spain;')
+	assert a.status_code == 200 and a.text == '"Madrid"\n'
 
-	assert isinstance(a, int)
+	# a = put('//http&http://127.0.0.1:5000/test/capital/Iceland;', 'Reykjavik')
+	# assert a.status_code == 201
 
-	with pytest.raises(ZeroDivisionError):
-		b = a/0
+	# a = get('//http&http://127.0.0.1:5000/test/capital/Iceland;')
+	# assert a.status_code == 200
 
-	assert 3*a == 3
+	# a = delete('//http&http://127.0.0.1:5000/test/capital/Iceland;')
+	# assert a.status_code == 200
+
+	# a = get('//http&http://127.0.0.1:5000/test/capital/Iceland;')
+	# assert a.status_code == 404
+
+	# q = get('//deque/my_stack.new')
+	# assert q.status_code == 200
+
+	# config = '("key" : ["URL", "CURLOPT_USERNAME"], "value" : ["http://127.0.0.1:5000/test/capital/", "me"])'
+
+	# q = put('//deque/my_stack/~last.raw', config)
+	# assert q.status_code == 200
+
+	# tp = get('//deque/my_stack/~plast')
+	# assert tp.status_code == 200
+
+	# i = get('//index/config.new')
+	# assert i.status_code == 200
+
+	# i = put('//index/config/~put', tp.content)
+	# assert i.status_code == 200
+
+	# q = get('//deque/my_stack/~last.raw=//index/config/~get')
+	# assert q.status_code == 200
+
+	# tp = get('//deque/my_stack/~plast.text')
+	# assert tp.status_code == 200
+
+	# a = get('//http&connection/capital;=//index/config')
+	# assert a.status_code == 201
+
+	# a = get('//http&connection/capital;')
+	# assert a.status_code == 200 and a.text == 'http://127.0.0.1:5000/test/capital/'
+
+	# a = get('//deque/my_stack/~last=//http/capital/(&Madagascar)')
+	# assert a.status_code == 200
+
+	# a = get('//deque/my_stack/~plast.text')
+	# assert a.status_code == 200
+	# ii = eval(a.text)
+	# s = ''.join([chr(i) for i in ii])
+	# assert s[0:9] == 'abcZPT456'
+
+	# a = delete('//http&connection/capital;')
+	# assert a.status_code == 200
+
+	# q = delete('//deque/my_stack')
+	# assert q.status_code == 200
 
 
 if __name__ == '__main__':
-	test_ChannelBash()
 	test_ChannelZmq()
+	test_ChannelBash()
 	test_ChannelFile()
 	test_ChannelHttp()
 
