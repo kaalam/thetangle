@@ -50,28 +50,28 @@ def test_Serialization():
 	ret_sli2 = '[[11, 54, 999], [12, 149, 9999], [15, 44, 99]]'
 
 	a = get('//lmdb/test_serial/kind.text')
-	assert a.status_code == 200 and a.text[:-1] == ret_kind
+	assert a.status_code == 200 and a.text == ret_kind
 
 	a = get('//lmdb/test_serial/s_kind')
-	assert a.status_code == 200 and a.text[:-1] == ret_kind
+	assert a.status_code == 200 and a.text == ret_kind
 
 	a = get('//lmdb/test_serial/tupl.text')
-	assert a.status_code == 200 and a.text[:-1] == ret_tupl
+	assert a.status_code == 200 and a.text == ret_tupl
 
 	a = get('//lmdb/test_serial/s_tupl')
-	assert a.status_code == 200 and a.text[:-1] == ret_tupl
+	assert a.status_code == 200 and a.text == ret_tupl
 
 	a = get('//lmdb/test_serial/tens.text')
-	assert a.status_code == 200 and a.text[:-1] == ret_tens
+	assert a.status_code == 200 and a.text == ret_tens
 
 	a = get('//lmdb/test_serial/s_tens')
-	assert a.status_code == 200 and a.text[:-1] == ret_tens
+	assert a.status_code == 200 and a.text == ret_tens
 
 	p = put('//lmdb/test_serial/slice.raw', ret_sli2)
 	assert p.status_code == 201
 
 	a = get('//lmdb/test_serial/slice.text')
-	assert a.status_code == 200 and a.text[:-1] == ret_sli2
+	assert a.status_code == 200 and a.text == ret_sli2
 
 	a = get('//lmdb/test_serial/tupl')
 	assert a.status_code == 200 and len(a.content) > 64
@@ -79,8 +79,11 @@ def test_Serialization():
 	p = put('//lmdb/test_serial/tup_src.text', a.content)
 	assert p.status_code == 201
 
+	b = get('//lmdb/test_serial/tupl')
+	assert b.status_code == 200 and len(b.content) > 64
+
 	a = get('//lmdb/test_serial/tup_src')
-	assert a.status_code == 200 and a.text[0] == '[' and a.text[-2] == ']'
+	assert a.status_code == 200 and a.text == ret_tupl
 
 	q = get('//deque/my_stack.new')
 	assert q.status_code == 200
@@ -89,7 +92,7 @@ def test_Serialization():
 	assert a.status_code == 200
 
 	a = get('//deque/my_stack/~plast.text')
-	assert a.status_code == 200 and a.text[:-1] == ret_sli1
+	assert a.status_code == 200 and a.text == ret_sli1
 
 	q = delete('//deque/my_stack')
 	assert q.status_code == 200
@@ -98,7 +101,7 @@ def test_Serialization():
 	assert a.status_code == 200
 
 	a = get('//lmdb/test_serial/slic.text')
-	assert a.status_code == 200 and a.text[:-1] == ret_sli2
+	assert a.status_code == 200 and a.text == ret_sli2
 
 	d = delete('//lmdb/test_serial')
 	assert d.status_code == 200
