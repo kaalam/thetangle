@@ -58,9 +58,23 @@ def test_ChannelFile():
 	n = put('//file&/tmp/new_folder/file.txt;', 'This is\nmultiline.')
 	assert n.status_code == 201
 
-	a = delete('//file&/tmp/new_folder/file.txt;')
-	assert isinstance(a, requests.models.Response)
+	q = get('//deque/my_stack.new')
+	assert q.status_code == 200
+
+	a = get('//deque/my_stack/~last=//file&/tmp/new_folder;')
 	assert a.status_code == 200
+
+	a = get('//deque/my_stack/~plast.text')
+	assert a.status_code == 200 and a.text == '("key" : ["file.txt"], "value" : ["file"])'
+
+	q = delete('//deque/my_stack')
+	assert q.status_code == 200
+
+	a = delete('//file&/tmp/new_folder/file.txt;')
+	assert a.status_code == 200
+
+	a = get('//deque/my_stack/~last=//file&/tmp/new_folder;')
+	assert a.status_code == 502
 
 	a = delete('//file&/tmp/new_folder;')
 	assert isinstance(a, requests.models.Response)
