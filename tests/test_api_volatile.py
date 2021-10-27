@@ -4,14 +4,93 @@ from http_requests import get, put, delete
 
 
 def test_VolatileDeque():
-	a = 1
+	q = get('//deque/stack_01.new')
+	assert q.status_code == 200
 
-	assert isinstance(a, int)
+	q = get('//deque/stack_02.new')
+	assert q.status_code == 200
 
-	with pytest.raises(ZeroDivisionError):
-		b = a/0
+	a = put('//deque/stack_02/tensor.raw', '[[1,1], [2,2], [3,3]]')
+	assert a.status_code == 201
 
-	assert 3*a == 3
+	a = put('//deque/stack_02/filter.raw', '[0,1]')
+	assert a.status_code == 201
+
+	a = get('//deque/stack_01/tensor-src=//deque/stack_02/tensor.text')
+	assert a.status_code == 200
+
+	a = get('//deque/stack_01/slice-1=//deque/stack_02/tensor[//deque/stack_02/filter]')
+	assert a.status_code == 200
+
+	a = get('//deque/stack_01/slice-2=//deque/stack_02/tensor[&[0]]')
+	assert a.status_code == 200
+
+	a = get('//deque/stack_02/result=//bash/exec/(&echo "2 + 2 = $(expr 2 + 2)")')
+	assert a.status_code == 200
+
+	a = get('//deque/stack_02/result.text')
+	assert a.status_code == 200
+	ii = eval(a.text)
+	s = ''.join([chr(i) for i in ii])
+	assert s[0:9] == '2 + 2 = 4'
+
+	a = get('//deque/stack_01/slice-1.text')
+	assert a.status_code == 200 and a.text == '[[1, 1], [2, 2]]'
+
+	a = get('//deque/stack_01/slice-2.text')
+	assert a.status_code == 200 and a.text == '[[1, 1]]'
+
+	a = get('//deque/stack_01/tensor-src')
+	assert a.status_code == 200 and a.text == '[[1, 1], [2, 2], [3, 3]]'
+
+	tp = get('//bash/exec/(&echo "2 + 2 = $(expr 2 + 2)")')
+	assert tp.status_code == 200
+
+	a = put('//deque/stack_02/~first', tp.content)
+	assert a.status_code == 201
+
+	a = get('//deque/stack_02/~pfirst.text')
+	assert a.status_code == 200
+	ii = eval(a.text)
+	s = ''.join([chr(i) for i in ii])
+	assert s[0:9] == '2 + 2 = 4'
+
+	tp = get('//deque/stack_02/tensor[//deque/stack_02/filter]')
+	assert tp.status_code == 200
+
+	a = put('//deque/stack_02/~first', tp.content)
+	assert a.status_code == 201
+
+	a = get('//deque/stack_02/~pfirst.text')
+	assert a.status_code == 200 and a.text == '[[1, 1], [2, 2]]'
+
+	tp = get('//deque/stack_02/tensor[&[1,2]]')
+	assert tp.status_code == 200
+
+	a = put('//deque/stack_02/~first', tp.content)
+	assert a.status_code == 201
+
+	a = get('//deque/stack_02/~pfirst.text')
+	assert a.status_code == 200 and a.text == '[[2, 2], [3, 3]]'
+
+	a = put('//deque/stack_02/mat_2x2', '[[2, 2], [3, 3]]')
+	assert a.status_code == 201
+
+	tp = get('//deque/stack_02/mat_2x2.raw')
+	assert tp.status_code == 200
+
+	a = put('//deque/stack_02/~first', tp.content)
+	assert a.status_code == 201
+
+	a = get('//deque/stack_02/~pfirst.text')
+	assert a.status_code == 200 and a.text == '[[2, 2], [3, 3]]'
+
+	q = delete('//deque/stack_01')
+	assert q.status_code == 200
+
+	q = delete('//deque/stack_02')
+	assert q.status_code == 200
+
 
 
 def test_VolatileIndex():
