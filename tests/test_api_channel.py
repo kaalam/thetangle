@@ -71,61 +71,64 @@ def test_ChannelHttp():
 	a = get('//http&http://127.0.0.1:5000/test/capital/Spain;')
 	assert a.status_code == 200 and a.text == '"Madrid"\n'
 
-	# a = put('//http&http://127.0.0.1:5000/test/capital/Iceland;', 'Reykjavik')
-	# assert a.status_code == 201
+	a = put('//http&http://127.0.0.1:5000/test/capital/Iceland;', 'Reykjavik')
+	assert a.status_code == 201
 
-	# a = get('//http&http://127.0.0.1:5000/test/capital/Iceland;')
-	# assert a.status_code == 200
+	a = get('//http&http://127.0.0.1:5000/test/capital/Iceland;')
+	assert a.status_code == 200 and a.text == '"Reykjavik"\n'
 
-	# a = delete('//http&http://127.0.0.1:5000/test/capital/Iceland;')
-	# assert a.status_code == 200
+	a = delete('//http&http://127.0.0.1:5000/test/capital/Iceland;')
+	assert a.status_code == 200
 
-	# a = get('//http&http://127.0.0.1:5000/test/capital/Iceland;')
-	# assert a.status_code == 404
+	a = get('//http&http://127.0.0.1:5000/test/capital/Iceland;')
+	assert a.status_code == 404
 
-	# q = get('//deque/my_stack.new')
-	# assert q.status_code == 200
+	q = get('//deque/my_stack.new')
+	assert q.status_code == 200
 
-	# config = '("key" : ["URL", "CURLOPT_USERNAME"], "value" : ["http://127.0.0.1:5000/test/capital/", "me"])'
+	config = '("key" : ["CURLOPT_USERNAME", "URL"], "value" : ["me", "http://127.0.0.1:5000/test/capital/"])'
 
-	# q = put('//deque/my_stack/~last.raw', config)
-	# assert q.status_code == 200
+	q = put('//deque/my_stack/~last.raw', config)
+	assert q.status_code == 201
 
-	# tp = get('//deque/my_stack/~plast')
-	# assert tp.status_code == 200
+	tp = get('//deque/my_stack/~plast')
+	assert tp.status_code == 200
 
-	# i = get('//index/config.new')
-	# assert i.status_code == 200
+	a = put('//http&connection/capital;', tp.content)
+	assert a.status_code == 201
 
-	# i = put('//index/config/~put', tp.content)
-	# assert i.status_code == 200
+	a = get('//deque/my_stack/~last=//http&connection/capital;')
+	assert a.status_code == 200
 
-	# q = get('//deque/my_stack/~last.raw=//index/config/~get')
-	# assert q.status_code == 200
+	a = get('//deque/my_stack/~plast.text')
+	assert a.status_code == 200 and a.text == config
 
-	# tp = get('//deque/my_stack/~plast.text')
-	# assert tp.status_code == 200
+	a = get('//http&capital/Spain;')
+	assert a.status_code == 200 and a.text == '"Madrid"\n'
 
-	# a = get('//http&connection/capital;=//index/config')
-	# assert a.status_code == 201
+	a = get('//http&capital/UK;')
+	assert a.status_code == 404
 
-	# a = get('//http&connection/capital;')
-	# assert a.status_code == 200 and a.text == 'http://127.0.0.1:5000/test/capital/'
+	a = put('//http&capital/UK;', 'London')
+	assert a.status_code == 201
 
-	# a = get('//deque/my_stack/~last=//http/capital/(&Madagascar)')
-	# assert a.status_code == 200
+	a = get('//http&capital/UK;')
+	assert a.status_code == 200 and a.text == '"London"\n'
 
-	# a = get('//deque/my_stack/~plast.text')
-	# assert a.status_code == 200
-	# ii = eval(a.text)
-	# s = ''.join([chr(i) for i in ii])
-	# assert s[0:9] == 'abcZPT456'
+	a = delete('//http&capital/UK;')
+	assert a.status_code == 200
 
-	# a = delete('//http&connection/capital;')
-	# assert a.status_code == 200
+	a = get('//http&capital/UK;')
+	assert a.status_code == 404
 
-	# q = delete('//deque/my_stack')
-	# assert q.status_code == 200
+	a = delete('//http&connection/capital;')
+	assert a.status_code == 200
+
+	a = get('//http&capital/Spain;')
+	assert a.status_code == 404
+
+	q = delete('//deque/my_stack')
+	assert q.status_code == 200
 
 
 if __name__ == '__main__':
