@@ -185,14 +185,50 @@ def test_VolatileQueue():
 
 
 def test_VolatileTree():
-	a = 1
+	q = get('//tree/game.new')
+	assert q.status_code == 200
 
-	assert isinstance(a, int)
+	a = put('//tree/game/root', '{}')
+	assert a.status_code == 201
 
-	with pytest.raises(ZeroDivisionError):
-		b = a/0
+	a = put('//tree/game/l1_3~root', '{3}')
+	assert a.status_code == 201
 
-	assert 3*a == 3
+	a = put('//tree/game/l1_2~root', '{2}')
+	assert a.status_code == 201
+
+	a = put('//tree/game/l1_1~root', '{1}')
+	assert a.status_code == 201
+
+	a = put('//tree/game/l2_3b~l1_3', '{3,b}')
+	assert a.status_code == 201
+
+	a = put('//tree/game/l2_3a~l1_3', '{3,a}')
+	assert a.status_code == 201
+
+	a = put('//tree/game/l2_1a~l1_1', '{1,a}')
+	assert a.status_code == 201
+
+	a = put('//tree/game/final~l2_3b', '{...}')
+	assert a.status_code == 201
+
+	a = get('//tree/game/~first')
+	assert a.status_code == 200 and a.text == '{}'
+
+	a = get('//tree/game/l2_3a~next')
+	assert a.status_code == 200 and a.text == '{3,b}'
+
+	a = get('//tree/game/l2_3b~next')
+	assert a.status_code == 404
+
+	a = get('//tree/game/l2_3b~child')
+	assert a.status_code == 200 and a.text == '{...}'
+
+	a = get('//tree/game/l2_1a~parent')
+	assert a.status_code == 200 and a.text == '{1}'
+
+	q = delete('//tree/game')
+	assert q.status_code == 200
 
 
 if __name__ == '__main__':
