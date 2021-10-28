@@ -92,16 +92,54 @@ def test_VolatileDeque():
 	assert q.status_code == 200
 
 
-
 def test_VolatileIndex():
-	a = 1
+	q = get('//deque/stack.new')
+	assert q.status_code == 200
 
-	assert isinstance(a, int)
+	q = get('//index/index01.new')
+	assert q.status_code == 200
 
-	with pytest.raises(ZeroDivisionError):
-		b = a/0
+	a = put('//index/index01/planet', 'A celestial body distinguished from the fixed stars by having an apparent motion of its own.')
+	assert a.status_code == 201
 
-	assert 3*a == 3
+	a = put('//index/index01/country', 'A nation with its own government, occupying a particular territory.')
+	assert a.status_code == 201
+
+	a = put('//index/index01/dog', 'A domesticated carnivorous mammal that typically has a long snout, an acute sense ...')
+	assert a.status_code == 201
+
+	a = get('//index/index01/country')
+	assert a.status_code == 200 and a.text == 'A nation with its own government, occupying a particular territory.'
+
+	a = get('//deque/stack/~last=//index/index01/~get')
+	assert a.status_code == 200
+
+	a = get('//deque/stack/~plast.text')
+	assert a.status_code == 200 and a.text[:11] == '("key" : ["' and a.text[-3:] == '"])'
+
+	a = put('//deque/stack/tupl.raw', a.text)
+	assert a.status_code == 201
+
+	q = get('//index/index02.new')
+	assert q.status_code == 200
+
+	q = get('//index/index02/~put=//deque/stack/tupl')
+	assert q.status_code == 200
+
+	a = get('//index/index02/dog')
+	assert a.status_code == 200 and a.text == 'A domesticated carnivorous mammal that typically has a long snout, an acute sense ...'
+
+	a = get('//index/index02/planet')
+	assert a.status_code == 200 and a.text == 'A celestial body distinguished from the fixed stars by having an apparent motion of its own.'
+
+	q = delete('//index/index01')
+	assert q.status_code == 200
+
+	q = delete('//index/index02')
+	assert q.status_code == 200
+
+	q = delete('//deque/stack')
+	assert q.status_code == 200
 
 
 def test_VolatileQueue():
