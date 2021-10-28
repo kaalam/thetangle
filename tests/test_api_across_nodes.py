@@ -60,7 +60,6 @@ def test_AcrossNodesBasic():
 
 
 def test_AcrossNodesAllRemoteRight():
-
 	q = get('//deque/my_stack.new')
 	assert q.status_code == 200
 
@@ -184,40 +183,170 @@ def test_AcrossNodesAllRemoteRight():
 	assert q.status_code == 200
 
 
-#define APPLY_URL						 2		///< //base& any_url_encoded_url ; (A call to http or file)
-#define APPLY_FUNCTION					 3		///< {///node}//base/entity/key(//r_base/r_entity/r_key) (A function call on a block.)
-#define APPLY_FUNCT_CONST				 4		///< //base/entity/key(& any_url_encoded_const) (A function call on a const.)
-#define APPLY_FILTER					 5		///< {///node}//base/entity/key[//r_base/r_entity/r_key] (A filter on a block.)
-#define APPLY_FILT_CONST				 6		///< {///node}//base/entity/key[& any_url_encoded_const] (A filter on a const.)
-#define APPLY_RAW						 7		///< {///node}//base/entity/key.raw (Serialize text to raw.)
-#define APPLY_TEXT						 8		///< {///node}//base/entity/key.text (Serialize raw to text.)
-#define APPLY_ASSIGN_NOTHING			 9		///< {///node}//base/entity/key=//r_base/r_entity/r_key (Assign block to block.)
-#define APPLY_ASSIGN_NAME				10		///< {///node}//base/entity/key=//r_base/r_entity/r_key:name (Tuple item -> block)
-#define APPLY_ASSIGN_URL				11		///< {///node}//base/entity/key=//r_base/r_entity/r_key:name (Tuple item -> block)
-#define APPLY_ASSIGN_FUNCTION			12		///< {///node}//base/entity/key=//r_base/r_entity/r_key(//t_base/t_entity/t_key)
-#define APPLY_ASSIGN_FUNCT_CONST		13		///< {///node}//base/entity/key=//r_base/r_entity/r_key(& any_url_encoded_const)
-#define APPLY_ASSIGN_FILTER				14		///< {///node}//base/entity/key=//r_base/r_entity/r_key[//t_base/t_entity/t_key]
-#define APPLY_ASSIGN_FILT_CONST			15		///< {///node}//base/entity/key=//r_base/r_entity/r_key[& any_url_encoded_const]
-#define APPLY_ASSIGN_RAW				16		///< {///node}//base/entity/key=//r_base/r_entity/r_key.raw
-#define APPLY_ASSIGN_TEXT				17		///< {///node}//base/entity/key=//r_base/r_entity/r_key.text
-#define APPLY_ASSIGN_CONST				18		///< {///node}//base/entity/key=& any_url_encoded_const ; (Assign const to block.)
-#define APPLY_NEW_ENTITY				19		///< {///node}//base/entity.new (Create a new entity)
-#define APPLY_GET_ATTRIBUTE				20		///< {///node}//base/entity/key.attribute(123) (read attribute 123 with HTTP_GET)
-#define APPLY_SET_ATTRIBUTE				21		///< //base/entity/key.attribute(123)=& url_encoded ; (set attribute 123 with HTTP_GET)
-
-
-
-def test_AcrossNodesAllRemoteLeft():
-	pass
-
 def test_AcrossNodesAllRemoteBoth():
-	pass
+	q = get('//deque/stack_01.new')
+	assert q.status_code == 200
+
+	q = get('///424x4//deque/stack_02.new')
+	assert q.status_code == 200
+
+	a = put('///424x4//deque/stack_02/tensor.raw', '[[1,1], [2,2], [3,3]]')
+	assert a.status_code == 201
+
+	a = put('//deque/stack_01/tt.raw', '[[1,4], [2,5], [3,6]]')
+	assert a.status_code == 201
+
+	a = put('///424x4//deque/stack_02/filter.raw', '[0,1]')
+	assert a.status_code == 201
+
+	a = put('//deque/stack_01/fi_fi.raw', '[1]')
+	assert a.status_code == 201
+
+	a = get('//deque/stack_01/tensor-src=///424x4//deque/stack_02/tensor.text')
+	assert a.status_code == 200
+
+	a = get('//deque/stack_01/slice-1=///424x4//deque/stack_02/tensor[//deque/stack_02/filter]')
+	assert a.status_code == 200
+
+	a = get('//deque/stack_01/slice-2=///424x4//deque/stack_02/tensor[&[0]]')
+	assert a.status_code == 200
+
+	a = get('//deque/stack_01/slice-3=//deque/stack_01/tt[///424x4//deque/stack_02/filter]')
+	assert a.status_code == 400
+
+	a = get('///424x4//deque/stack_02/tensor[//deque/stack_01/fi_fi]')
+	assert a.status_code == 404
+
+	a = get('//deque/stack_02/tensor[//deque/stack_01/fi_fi]', remote = True)
+	assert a.status_code == 404
+
+	a = get('//deque/stack_01/slice-4=///424x4//deque/stack_02/tensor[//deque/stack_01/fi_fi]')
+	assert a.status_code == 404
+
+	tp = get('///424x4//bash/exec/(&echo "2 + 2 = $(expr 2 + 2)")')
+	assert tp.status_code == 200
+
+	a = put('//deque/stack_01/~last', tp.content)
+	assert a.status_code == 201
+
+	a = get('//deque/stack_01/~plast.text')
+	assert a.status_code == 200
+
+	a = get('///424x4//deque/stack_02/result=//bash/exec/(&echo "2 + 2 = $(expr 2 + 2)")')
+	assert a.status_code == 200
+
+	a = get('///424x4//deque/stack_02/result.text')
+	assert a.status_code == 200 and a.text == '["2 + 2 = 4\\n"]'
+
+	a = get('//deque/stack_01/result=///424x4//bash/exec/(&echo "2 + 2 = $(expr 2 + 2)")')
+	assert a.status_code == 200
+
+	a = get('//deque/stack_01/result.text')
+	assert a.status_code == 200
+
+	a = get('///424x4//deque/stack_02/result=///424x4//bash/exec/(&echo "2 + 2 = $(expr 2 + 2)")')
+	assert a.status_code == 200
+
+	a = get('///424x4//deque/stack_02/result.text')
+	assert a.status_code == 200 and a.text == '["2 + 2 = 4\\n"]'
+
+	a = get('//deque/stack_01/slice-1.text')
+	assert a.status_code == 200 and a.text == '[[1, 1], [2, 2]]'
+
+	a = get('//deque/stack_01/slice-2.text')
+	assert a.status_code == 200 and a.text == '[[1, 1]]'
+
+	a = get('//deque/stack_01/tensor-src')
+	assert a.status_code == 200 and a.text == '[[1, 1], [2, 2], [3, 3]]'
+
+	tp = get('//bash/exec/(&echo "2 + 2 = $(expr 2 + 2)")')
+	assert tp.status_code == 200
+
+	a = put('///424x4//deque/stack_02/~first', tp.content)
+	assert a.status_code == 201
+
+	a = get('///424x4//deque/stack_02/~pfirst.text')
+	assert a.status_code == 200 and a.text == '["2 + 2 = 4\\n"]'
+
+	tp = get('///424x4//deque/stack_02/tensor[//deque/stack_02/filter]')
+	assert tp.status_code == 200
+
+	a = put('///424x4//deque/stack_02/~first', tp.content)
+	assert a.status_code == 201
+
+	a = get('///424x4//deque/stack_02/~pfirst.text')
+	assert a.status_code == 200 and a.text == '[[1, 1], [2, 2]]'
+
+	tp = get('///424x4//deque/stack_02/tensor[&[1,2]]')
+	assert tp.status_code == 200
+
+	a = put('///424x4//deque/stack_02/~first', tp.content)
+	assert a.status_code == 201
+
+	a = get('///424x4//deque/stack_02/~pfirst.text')
+	assert a.status_code == 200 and a.text == '[[2, 2], [3, 3]]'
+
+	a = put('///424x4//deque/stack_02/mat_2x2', '[[2, 2], [3, 3]]')
+	assert a.status_code == 201
+
+	tp = get('///424x4//deque/stack_02/mat_2x2.raw')
+	assert tp.status_code == 200
+
+	a = put('///424x4//deque/stack_02/~first', tp.content)
+	assert a.status_code == 201
+
+	a = get('///424x4//deque/stack_02/~pfirst.text')
+	assert a.status_code == 200 and a.text == '[[2, 2], [3, 3]]'
+
+	a = get('//deque/stack_01/~last=///424x4//deque/stack_02/mat_2x2.raw')
+	assert tp.status_code == 200
+
+	a = get('//deque/stack_01/~plast.text')
+	assert a.status_code == 200 and a.text == '[[2, 2], [3, 3]]'
+
+	a = get('//deque/stack_01/~last=///424x4//deque/stack_02/mat_2x2(//bb/ee/kk)')
+	assert a.status_code == 404
+
+	a = get('///424x4//deque/stack_02/mat_2x2(//bb/ee/kk)')
+	assert a.status_code == 404
+
+	a = get('//deque/stack_02/mat_2x2(//bb/ee/kk)', remote = True)
+	assert a.status_code == 404
+
+	a = get('//deque/stack_01/~last=///424x4//deque/stack_02/tensor')
+	assert tp.status_code == 200
+
+	a = get('//deque/stack_01/~plast.text')
+	assert a.status_code == 200 and a.text == '[[1, 1], [2, 2], [3, 3]]'
+
+	a = get('//deque/stack_01/~last=///424x4//http&http://127.0.0.1:5000/test/capital/Spain;')
+	assert tp.status_code == 200
+
+	a = get('//deque/stack_01/~plast.text')
+	assert a.status_code == 200
+
+	a = get('//deque/stack_01/tt-src=//deque/stack_01/tt.text')
+	assert a.status_code == 200
+
+	a = get('//deque/stack_01/tt-src')
+	assert a.status_code == 200 and a.text == '[[1, 4], [2, 5], [3, 6]]'
+
+	a = get('//deque/stack_01/tt-raw=//deque/stack_01/tt-src.raw')
+	assert a.status_code == 200
+
+	a = get('//deque/stack_01/tt-raw.text')
+	assert a.status_code == 200 and a.text == '[[1, 4], [2, 5], [3, 6]]'
+
+	q = delete('//deque/stack_01')
+	assert q.status_code == 200
+
+	q = delete('///424x4//deque/stack_02')
+	assert q.status_code == 200
 
 
 if __name__ == '__main__':
 	test_AcrossNodesBasic()
 	test_AcrossNodesAllRemoteRight()
-	test_AcrossNodesAllRemoteLeft()
 	test_AcrossNodesAllRemoteBoth()
 
 	print('\n\nDone.')
