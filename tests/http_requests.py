@@ -1,7 +1,7 @@
 import requests as http
 
 SERVER_URL = 'http://192.168.1.19:8899'
-REMOTE_URL = 'http://192.168.1.141:8888'
+REMOTE_URL = 'http://192.168.1.141:8899'
 
 
 def get(qq, remote = False):
