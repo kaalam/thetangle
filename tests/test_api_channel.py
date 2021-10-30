@@ -7,11 +7,11 @@ def test_ChannelZmq():
 	q = get('//deque/my_stack.new')
 	assert q.status_code == 200
 
-	a = put('//0-mq&pipeline/alpha;', 'tcp://localhost:5555')
+	a = put('//0-mq&pipeline/alpha;', 'tcp://192.168.1.19:5555')
 	assert a.status_code == 201
 
 	a = get('//0-mq&pipeline/alpha;')
-	assert a.status_code == 200 and a.text == 'tcp://localhost:5555'
+	assert a.status_code == 200 and a.text == 'tcp://192.168.1.19:5555'
 
 	a = get('//deque/my_stack/~last=//0-mq/alpha/(&a b c & Z P T - 456 = .)')
 	assert a.status_code == 200
@@ -82,25 +82,25 @@ def test_ChannelFile():
 
 
 def test_ChannelHttp():
-	a = get('//http&http://127.0.0.1:5000/test/capital/Spain;')
+	a = get('//http&http://192.168.1.141:5000/test/capital/Spain;')
 	assert a.status_code == 200 and a.text == '"Madrid"\n'
 
-	a = put('//http&http://127.0.0.1:5000/test/capital/Iceland;', 'Reykjavik')
+	a = put('//http&http://192.168.1.141:5000/test/capital/Iceland;', 'Reykjavik')
 	assert a.status_code == 201
 
-	a = get('//http&http://127.0.0.1:5000/test/capital/Iceland;')
+	a = get('//http&http://192.168.1.141:5000/test/capital/Iceland;')
 	assert a.status_code == 200 and a.text == '"Reykjavik"\n'
 
-	a = delete('//http&http://127.0.0.1:5000/test/capital/Iceland;')
+	a = delete('//http&http://192.168.1.141:5000/test/capital/Iceland;')
 	assert a.status_code == 200
 
-	a = get('//http&http://127.0.0.1:5000/test/capital/Iceland;')
+	a = get('//http&http://192.168.1.141:5000/test/capital/Iceland;')
 	assert a.status_code == 404
 
 	q = get('//deque/my_stack.new')
 	assert q.status_code == 200
 
-	config = '("key" : ["CURLOPT_USERNAME", "URL"], "value" : ["me", "http://127.0.0.1:5000/test/capital/"])'
+	config = '("key" : ["CURLOPT_USERNAME", "URL"], "value" : ["me", "http://192.168.1.141:5000/test/capital/"])'
 
 	q = put('//deque/my_stack/~last.raw', config)
 	assert q.status_code == 201
