@@ -1,17 +1,39 @@
-# A Minimalistic Utility to Explore The Tangle
+# Python utilities for The Tangle
+
 
 ## What is this?
 
-This neither the recommended way to use The Tangle nor a way to access all the functionality.
+This repository contains three different parts for **building**, **testing** and **exploring** The Tangle.
 
-### The Tangle:
 
-  * xxx
+## Exploring The Tangle
 
-### Jazz:
+This is probably the only part of this repository you may need. You can just `pip install thetangle` and run examples from the folder
+`python_examples`
 
-  * xxx
 
-### Usage:
+## Building the package
 
-  * xxx
+Run the script `release.sh`. You will need a `twine_credentials.sh` file that exports the system variables `TWINE_USERNAME=xxx` and
+`TWINE_PASSWORD=xxx`.
+
+
+## Building the datasets and pushing them to github
+
+Setup everything (finding the sources and storing them in your staging area requires a lot of work, use the scripts in `ETL/scripts`
+as a reference) and run:
+
+```
+cd ETL
+./do_all.sh
+```
+
+
+## Integration Testing for a Jazz cluster
+
+run `./test_cluster.sh`
+
+
+## Testing a Jazz node containing The Tangle
+
+run `./test_tangle.sh`
