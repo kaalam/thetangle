@@ -33,6 +33,8 @@ cd ETL
 
 run `./test_cluster.sh`
 
+You will have to set up a two node cluster and configure the IPs and ports of your nodes in `cluster_tests/http_requests.py`.
+
 
 ## Testing a Jazz node containing The Tangle
 
