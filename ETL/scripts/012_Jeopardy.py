@@ -1,5 +1,7 @@
 import re
 
+from file_paths import etl_source, etl_dest, etl_indices
+
 
 def clean(s):
 	while s.find('  ') >=0: s = s.replace('  ', ' ')
@@ -10,13 +12,13 @@ def clean(s):
 
 class Jeopardy:
 
-	def __init__(self, in_path = '/home/jadmin/kaalam.etc/nlp/corpora/jeopardy/', out_path  = './'):
-		self.in_category  = in_path	 + 'category.txt'
-		self.in_question  = in_path	 + 'question.txt'
-		self.in_answer	  = in_path	 + 'answer.txt'
-		self.out_category = out_path + 'jeopardy/category.txt'
-		self.out_question = out_path + 'jeopardy/question.txt'
-		self.out_answer	  = out_path + 'jeopardy/answer.txt'
+	def __init__(self, in_path = etl_source + '/jeopardy', out_path = etl_dest):
+		self.in_category  = in_path	 + '/category.txt'
+		self.in_question  = in_path	 + '/question.txt'
+		self.in_answer	  = in_path	 + '/answer.txt'
+		self.out_category = out_path + '/jeopardy/category.txt'
+		self.out_question = out_path + '/jeopardy/question.txt'
+		self.out_answer	  = out_path + '/jeopardy/answer.txt'
 
 
 	def inputs(self):
