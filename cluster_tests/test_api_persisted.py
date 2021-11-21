@@ -43,7 +43,7 @@ def test_PersistedLmdb():
 	assert a.status_code == 404
 
 
-if __name__ == '__main__':
-	test_PersistedLmdb()
+# if __name__ == '__main__':
+# 	test_PersistedLmdb()
 
-	print('\n\nDone.')
+# 	print('\n\nDone.')

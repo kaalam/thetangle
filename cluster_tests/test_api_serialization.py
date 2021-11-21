@@ -110,7 +110,7 @@ def test_Serialization():
 	assert a.status_code == 404
 
 
-if __name__ == '__main__':
-	test_Serialization()
+# if __name__ == '__main__':
+# 	test_Serialization()
 
-	print('\n\nDone.')
+# 	print('\n\nDone.')

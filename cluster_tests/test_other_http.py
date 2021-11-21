@@ -66,7 +66,7 @@ def test_OtherHttp():
 		put('///as23-94ph//zz/ent/kk', '123')
 
 
-if __name__ == '__main__':
-	test_OtherHttp()
+# if __name__ == '__main__':
+# 	test_OtherHttp()
 
-	print('\n\nDone.')
+# 	print('\n\nDone.')

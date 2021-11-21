@@ -89,8 +89,8 @@ def test_PutGetRemoteAttributes():
 	assert p.status_code == 502
 
 
-if __name__ == '__main__':
-	test_PutStaticAttributes()
-	test_PutGetRemoteAttributes()
+# if __name__ == '__main__':
+# 	test_PutStaticAttributes()
+# 	test_PutGetRemoteAttributes()
 
-	print('\n\nDone.')
+# 	print('\n\nDone.')

@@ -145,10 +145,10 @@ def test_ChannelHttp():
 	assert q.status_code == 200
 
 
-if __name__ == '__main__':
-	test_ChannelZmq()
-	test_ChannelBash()
-	test_ChannelFile()
-	test_ChannelHttp()
+# if __name__ == '__main__':
+# 	test_ChannelZmq()
+# 	test_ChannelBash()
+# 	test_ChannelFile()
+# 	test_ChannelHttp()
 
-	print('\n\nDone.')
+# 	print('\n\nDone.')

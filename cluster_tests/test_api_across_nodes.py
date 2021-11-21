@@ -196,6 +196,9 @@ def test_AcrossNodesAllRemoteBoth():
 	a = put('//deque/stack_01/tt.raw', '[[1,4], [2,5], [3,6]]')
 	assert a.status_code == 201
 
+	a = put('//deque/stack_02/filter.raw', '[0,1]', remote = True)
+	assert a.status_code == 201
+
 	a = put('///424x4//deque/stack_02/filter.raw', '[0,1]')
 	assert a.status_code == 201
 
@@ -340,13 +343,13 @@ def test_AcrossNodesAllRemoteBoth():
 	q = delete('//deque/stack_01')
 	assert q.status_code == 200
 
-	q = delete('///424x4//deque/stack_02')
+	q = delete('//deque/stack_02', remote = True)
 	assert q.status_code == 200
 
 
-if __name__ == '__main__':
-	test_AcrossNodesBasic()
-	test_AcrossNodesAllRemoteRight()
-	test_AcrossNodesAllRemoteBoth()
+# if __name__ == '__main__':
+# 	test_AcrossNodesBasic()
+# 	test_AcrossNodesAllRemoteRight()
+# 	test_AcrossNodesAllRemoteBoth()
 
-	print('\n\nDone.')
+# 	print('\n\nDone.')
