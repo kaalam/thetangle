@@ -1,6 +1,7 @@
 import re
 
-from file_paths import etl_source, etl_dest, etl_indices
+from file_paths import etl_source, etl_dest
+from Section import Section
 
 
 def clean(s):
@@ -16,9 +17,10 @@ class Jeopardy:
 		self.in_category  = in_path	 + '/category.txt'
 		self.in_question  = in_path	 + '/question.txt'
 		self.in_answer	  = in_path	 + '/answer.txt'
-		self.out_category = out_path + '/jeopardy/category.txt'
-		self.out_question = out_path + '/jeopardy/question.txt'
-		self.out_answer	  = out_path + '/jeopardy/answer.txt'
+
+		self.category = Section('jeopardy', 'category', out_path + '/jeopardy')
+		self.question = Section('jeopardy', 'question', out_path + '/jeopardy')
+		self.answer	  = Section('jeopardy', 'answer',	out_path + '/jeopardy')
 
 
 	def inputs(self):
@@ -33,11 +35,6 @@ class Jeopardy:
 		f_ic = open(self.in_category, 'r')
 		f_iq = open(self.in_question, 'r')
 		f_ia = open(self.in_answer, 'r')
-		f_oc = open(self.out_category, 'w')
-		f_oq = open(self.out_question, 'w')
-		f_oa = open(self.out_answer, 'w')
-
-		rex_cl = re.compile('[^a-z0-9\'\\-,\\.\\? ]')
 
 		t_ll = 0
 
@@ -52,9 +49,9 @@ class Jeopardy:
 			if t_ll % 10000 == 0:
 				print('%0.2fM,' % (t_ll/1000000), end = ' ', flush = True)
 
-			f_oc.write(clean(rex_cl.sub(' ', ct.lower())) + '\n')
-			f_oq.write(clean(rex_cl.sub(' ', qq.lower())) + '\n')
-			f_oa.write(clean(rex_cl.sub(' ', aa.lower())) + '\n')
+			self.category.write_line(ct)
+			self.question.write_line(qq)
+			self.answer.write_line(aa)
 
 			ct = f_ic.readline()
 			qq = f_iq.readline()
@@ -65,9 +62,10 @@ class Jeopardy:
 		f_ic.close()
 		f_iq.close()
 		f_ia.close()
-		f_oc.close()
-		f_oq.close()
-		f_oa.close()
+
+		self.category.close()
+		self.question.close()
+		self.answer.close()
 
 
 c = Jeopardy()
