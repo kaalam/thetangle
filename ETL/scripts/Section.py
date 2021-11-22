@@ -42,7 +42,7 @@ class Section():
 		else:
 			self.f_out.write(',')
 
-		self.f_out.write('"%s"' % self.rex.sub('', ln.replace('\n', ' ').replace('"', "'")))
+		self.f_out.write('"%s"' % ' '.join(self.rex.sub('', ln.replace('\n', ' ').replace('"', "'")).strip().split()))
 		self.block_idx += 1
 
 
