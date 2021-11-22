@@ -5,14 +5,12 @@ set -e
 
 # Make all folders
 
-mkdir -p ../../tng-data-grammar/data/indices
 mkdir -p ../../tng-data-qa/data/jeopardy
 
 
 # Setup the environment
 
 export TANGLE_ETL_SOURCE=~/kaalam.etc/nlp/corpora
-export TANGLE_ETL_INDICES=../../tng-data-grammar/data/indices
 
 
 # Make raw data for Grammar
@@ -38,7 +36,7 @@ export TANGLE_ETL_DEST=../../tng-data-facts/data
 export TANGLE_ETL_DEST=../../tng-data-qa/data
 
 	# ... python scripts/011_SQUAD20.py
-python scripts/012_Jeopardy.py
+	python scripts/012_Jeopardy.py
 
 
 # Make raw data for Readings
