@@ -15,7 +15,7 @@ class Ascent:
 	def build(self):
 		f_in = open(self.source_fn, 'r')
 
-		rex_fi = re.compile('^[a-z ]+$')
+		rex_fi = re.compile('^[a-zA-Z ]+$')
 
 		words = set()
 
@@ -36,11 +36,11 @@ class Ascent:
 				try:
 					obj = json.loads(line)
 
-					arg1 = obj['arg1'].lower()
+					arg1 = obj['arg1']
 					if rex_fi.match(arg1):
 						words.add(arg1)
 
-					arg2 = obj['arg2'].lower()
+					arg2 = obj['arg2']
 					if rex_fi.match(arg2):
 						words.add(arg2)
 
