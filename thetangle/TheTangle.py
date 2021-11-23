@@ -41,6 +41,24 @@ class TangleExplorer():
 		self.rex_block	 = re.compile('^//lmdb/the_tangle/([^_]+)_([^_]+)_([0-9]+)_([0-9]+)$')
 
 
+	def datasets(self, urls_as_names = False):
+		"""
+		Returns a list with the dataset names stored in The Tangle.
+
+	    Arguments:
+		urls_as_names -- If true, the returns the urls of the sections list rather than just the dataset names.
+		"""
+
+		a = get(self.root)
+		assert a.status_code == 200
+
+		ds = a.text.split(',')
+		if urls_as_names:
+			return ds
+
+		return [self.rex_dataset.sub('\\1', d) for d in ds]
+
+
 
 
 class CompileTheTangle():
