@@ -5,6 +5,10 @@ set -e
 
 # Make all folders
 
+mkdir -p ../../tng-data-facts/data/ConceptNet
+mkdir -p ../../tng-data-facts/data/ascent
+mkdir -p ../../tng-data-facts/data/GenericsKB
+mkdir -p ../../tng-data-qa/data/squad20
 mkdir -p ../../tng-data-qa/data/jeopardy
 
 
@@ -26,16 +30,16 @@ export TANGLE_ETL_DEST=../../tng-data-grammar/data
 
 export TANGLE_ETL_DEST=../../tng-data-facts/data
 
-	# ... python scripts/001_ConceptNet.py
-	# ... python scripts/002_Ascent.py
-	# ... python scripts/003_GenericsKB.py
+	python scripts/001_ConceptNet.py
+	python scripts/002_Ascent.py
+	python scripts/003_GenericsKB.py
 
 
 # Make raw data for Q&A
 
 export TANGLE_ETL_DEST=../../tng-data-qa/data
 
-	# ... python scripts/011_SQUAD20.py
+	python scripts/011_SQUAD20.py
 	python scripts/012_Jeopardy.py
 
 
@@ -43,8 +47,8 @@ export TANGLE_ETL_DEST=../../tng-data-qa/data
 
 export TANGLE_ETL_DEST=../../tng-data-readings/data
 
-	# ... python scripts/022_Gutenberg.py
-	# ... python scripts/023_OpenSubtitles.py
+	# python scripts/022_Gutenberg.py
+	# python scripts/023_OpenSubtitles.py
 
 
 # Make raw data for Wikipedia
