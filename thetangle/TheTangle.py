@@ -47,26 +47,30 @@ class CompileTheTangle():
 		return eval('{%s}' % a.text[1:-1])
 
 
-	def push_block(self, repo, dataset, section, fn):
-		self.datasets.add('//lmdb/the_tangle/%s_sections' % dataset)
+	def push_block(self, repo, s_dataset, s_section, fn):
+		u_dataset = '//lmdb/the_tangle/%s_sections' % s_dataset
+		u_section = '//lmdb/the_tangle/%s_%s_blocks' % (s_dataset, s_section)
+		u_block	  = '//lmdb/the_tangle/%s' % fn
 
-		if dataset not in self.sections:
-			self.sections[dataset] = dict()
+		self.datasets.add(u_dataset)
 
-		if dataset not in self.blocks:
-			self.blocks[dataset] = dict()
+		if u_dataset not in self.sections:
+			self.sections[u_dataset] = set()
 
-		if section not in self.blocks[dataset]:
-			self.blocks[dataset][section] = []
+		self.sections[u_dataset].add(u_section)
 
-		self.sections[dataset][section] = '//lmdb/the_tangle/%s_%s_blocks' % (dataset, section)
+		if u_dataset not in self.blocks:
+			self.blocks[u_dataset] = dict()
 
-		self.blocks[dataset][section].append('//lmdb/the_tangle/%s' % fn)
+		if u_section not in self.blocks[u_dataset]:
+			self.blocks[u_dataset][u_section] = []
 
-		a = get('//deque/etl_stack/~last=//file&%s/%s/data/%s/%s;' % (self.repos_path, repo, dataset, fn))
+		self.blocks[u_dataset][u_section].append(u_block)
+
+		a = get('//deque/etl_stack/~last=//file&%s/%s/data/%s/%s;' % (self.repos_path, repo, s_dataset, fn))
 		assert a.status_code == 200
 
-		a = get('//lmdb/the_tangle/%s=//deque/etl_stack/~plast.raw' % fn)
+		a = get('%s=//deque/etl_stack/~plast.raw' % u_block)
 		assert a.status_code == 200
 
 
