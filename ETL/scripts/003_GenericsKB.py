@@ -1,29 +1,21 @@
 import re
 
+from file_paths import etl_source, etl_dest
+from Section import Section
+
 
 class GenericsKB:
 
-	def __init__(self, source_fn = '/home/jadmin/kaalam.etc/nlp/corpora/GenericsKB/GenericsKB.tsv', out_path  = './'):
+	def __init__(self, source_fn = etl_source + '/GenericsKB/GenericsKB.tsv', out_path  = etl_dest):
 		self.source_fn = source_fn
-		self.out_relations = out_path + 'generics_kb/blocks.txt'
-		self.out_concepts  = out_path + 'indices/words.generics_kb'
-
-
-	def inputs(self):
-		return [self.source_fn]
-
-
-	def outputs(self):
-		return [self.out_relations, self.out_concepts]
+		self.relations = Section('GenericsKB', 'relations', out_path + '/GenericsKB')
+		self.concepts  = Section('GenericsKB', 'concepts', out_path + '/GenericsKB', num_rows = 10000)
 
 
 	def build(self):
 		f_in = open(self.source_fn, 'r')
-		f_ix = open(self.out_concepts, 'w')
-		f_rl = open(self.out_relations, 'w')
 
-		rex_cl = re.compile('[^a-z ]')
-		rex_fi = re.compile('^[a-z ]+$')
+		rex_fi = re.compile('^[a-zA-Z ]+$')
 
 		words = set()
 
@@ -46,21 +38,22 @@ class GenericsKB:
 				try:
 					source, term, quantifier, sentence, score = line.split('\t')
 
-					if rex_fi.match(term.lower()):
-						words.add(term.lower())
+					if rex_fi.match(term):
+						words.add(term)
 
-						f_rl.write(rex_cl.sub('', sentence.lower()) + '\n')
+						self.relations.write_line(sentence)
 
 				except ValueError:
 					pass
 
 		wl = list(words)
 		wl.sort()
-		f_ix.write('\n'.join(wl))
+		for w in wl:
+			self.concepts.write_line(w)
 
 		f_in.close()
-		f_ix.close()
-		f_rl.close()
+		self.relations.close()
+		self.concepts.close()
 
 
 c = GenericsKB()
