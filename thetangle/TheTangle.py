@@ -12,12 +12,17 @@ LOCAL_SERVER_URL = 'http://127.0.0.1:8899'
 
 
 def get(qq):
+	""" Do an http GET call from a local Jazz server. See https://kaalam.github.io/jazz_reference/api_ref_intro.html """
 	return http.get(LOCAL_SERVER_URL + qq)
 
+
 def put(qq, string):
+	""" Do an http PUT call to a local Jazz server. See https://kaalam.github.io/jazz_reference/api_ref_intro.html """
 	return http.put(LOCAL_SERVER_URL + qq, string)
 
+
 def delete(qq):
+	""" Do an http DELETE call to a local Jazz server. See https://kaalam.github.io/jazz_reference/api_ref_intro.html """
 	return http.delete(LOCAL_SERVER_URL + qq)
 
 
