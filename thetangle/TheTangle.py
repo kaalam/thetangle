@@ -33,8 +33,14 @@ class TangleExplorer():
 	NOTE: The Tangle is not supposed to be accessed via http, but to serve for language research coded inside the Jazz server.
 	"""
 
-	def __init__(self):
-		pass
+	def __init__(self, root = '//lmdb/the_tangle/datasets'):
+		self.root = root
+
+		self.rex_dataset = re.compile('^//lmdb/the_tangle/([^_]+)_sections$')
+		self.rex_section = re.compile('^//lmdb/the_tangle/([^_]+)_([^_]+)_blocks$')
+		self.rex_block	 = re.compile('^//lmdb/the_tangle/([^_]+)_([^_]+)_([0-9]+)_([0-9]+)$')
+
+
 
 
 class CompileTheTangle():
