@@ -1,30 +1,22 @@
 import re
 
+from file_paths import etl_source, etl_dest
+from Section import Section
+
 
 class ConceptNet:
 
-	def __init__(self, source_fn = '/home/jadmin/kaalam.etc/nlp/corpora/ConceptNet55/conceptnet-assertions-5.7.0.csv', out_path  = './'):
+	def __init__(self, source_fn = etl_source + '/ConceptNet55/conceptnet-assertions-5.7.0.csv', out_path = etl_dest):
 		self.source_fn = source_fn
-		self.out_relations = out_path + 'conceptnet/blocks.txt'
-		self.out_concepts  = out_path + 'indices/words.conceptnet'
-
-
-	def inputs(self):
-		return [self.source_fn]
-
-
-	def outputs(self):
-		return [self.out_relations, self.out_concepts]
+		self.relations = Section('ConceptNet', 'relations', out_path + '/ConceptNet')
+		self.concepts  = Section('ConceptNet', 'concepts', out_path + '/ConceptNet', num_rows = 10000)
 
 
 	def build(self):
 		f_in = open(self.source_fn, 'r')
-		f_ix = open(self.out_concepts, 'w')
-		f_rl = open(self.out_relations, 'w')
 
 		rex_ix = re.compile('^/c/en/([a-z_]+)(/.*)?$')
 		rex_rl = re.compile('^.*"surfaceText": "([^"]+)".*$')
-		rex_cl = re.compile('[^a-z ]')
 
 		words = set()
 
@@ -58,7 +50,7 @@ class ConceptNet:
 
 						if rex_rl.match(extra):
 							t_rl += 1
-							f_rl.write(rex_cl.sub('', rex_rl.sub('\\1', extra).lower().strip()) + '\n')
+							self.relations.write_line(rex_rl.sub('\\1', extra))
 
 				except ValueError:
 					pass
@@ -67,11 +59,12 @@ class ConceptNet:
 
 		wl = list(words)
 		wl.sort()
-		f_ix.write('\n'.join(wl))
+		for w in wl:
+			self.concepts.write_line(w)
 
 		f_in.close()
-		f_ix.close()
-		f_rl.close()
+		self.relations.close()
+		self.concepts.close()
 
 
 c = ConceptNet()
