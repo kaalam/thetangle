@@ -1,29 +1,20 @@
-import json
-import re
+import json, re
+
+from file_paths import etl_source, etl_dest
+from Section import Section
 
 
 class Ascent:
 
-	def __init__(self, source_fn = '/home/jadmin/kaalam.etc/nlp/corpora/ascent/ascent-v1.0.0.json', out_path  = './'):
+	def __init__(self, source_fn = etl_source + '/ascent/ascent-v1.0.0.json', out_path = etl_dest):
 		self.source_fn = source_fn
-		self.out_relations = out_path + 'ascent/blocks.txt'
-		self.out_concepts  = out_path + 'indices/words.ascent'
-
-
-	def inputs(self):
-		return [self.source_fn]
-
-
-	def outputs(self):
-		return [self.out_relations, self.out_concepts]
+		self.relations = Section('ascent', 'relations', out_path + '/ascent')
+		self.concepts  = Section('ascent', 'concepts', out_path + '/ascent', num_rows = 10000)
 
 
 	def build(self):
 		f_in = open(self.source_fn, 'r')
-		f_ix = open(self.out_concepts, 'w')
-		f_rl = open(self.out_relations, 'w')
 
-		rex_cl = re.compile('[^a-z ]')
 		rex_fi = re.compile('^[a-z ]+$')
 
 		words = set()
@@ -56,7 +47,7 @@ class Ascent:
 					if "source_sentences" in obj:
 						ll = obj["source_sentences"]
 						for s in ll:
-							f_rl.write(rex_cl.sub('', s['text'].lower()).replace('  ', ' ') + '\n')
+							self.relations.write_line(s['text'])
 
 				except ValueError:
 					pass
@@ -65,11 +56,12 @@ class Ascent:
 
 		wl = list(words)
 		wl.sort()
-		f_ix.write('\n'.join(wl))
+		for w in wl:
+			self.concepts.write_line(w)
 
 		f_in.close()
-		f_ix.close()
-		f_rl.close()
+		self.relations.close()
+		self.concepts.close()
 
 
 c = Ascent()
