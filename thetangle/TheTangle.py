@@ -91,7 +91,6 @@ class CompileTheTangle():
 
 
 	def compile_repo(self, repo):
-		print(repo)
 		ll = self.ls('%s/%s/data' % (self.repos_path, repo))
 		for dataset, typ in zip(ll['key'], ll['value']):
 			if typ == 'folder':
