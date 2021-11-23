@@ -104,6 +104,18 @@ class CompileTheTangle():
 
 
 	def compile(self, keep_repositories = False):
+		get('//deque/etl_stack.new')
+		if 'github_repos' not in self.ls('/home/jazz/jazz_dbg_mdb/')['key']:
+			print('The "github_repos" folder does not exist in the docker image!')
+			print('\nPossible reasons are:\n')
+			print('  1. You are trying to use this on a Jazz server that is not The Tangle.')
+			print('  2. You have not yet run "./download_and_store.sh" in the container.')
+			print('  3. You already completed CompileTheTangle (must only be done once).\n')
+			print('See https://kaalam.github.io/jazz_reference/reference_docker_tangle_server.html for details')
+			delete('//deque/etl_stack')
+
+			return
+
 		delete('//lmdb/the_tangle')
 		a = get('//lmdb/the_tangle.new')
 		assert a.status_code == 200
