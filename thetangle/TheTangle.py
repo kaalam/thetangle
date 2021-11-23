@@ -228,6 +228,3 @@ class CompileTheTangle():
 
 		print('\nDone.')
 		delete('//deque/etl_stack')
-
-
-# CompileTheTangle().compile()
