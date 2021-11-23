@@ -97,6 +97,12 @@ class CompileTheTangle():
 				self.compile_dataset(repo, dataset)
 
 
+	def write_block(self, w_url, w_list):
+		print('Writing %s' % w_url)
+		a = put(w_url, ','.join(w_list))
+		assert a.status_code == 201
+
+
 		delete('//lmdb/the_tangle')
 		a = get('//lmdb/the_tangle.new')
 		assert a.status_code == 200
