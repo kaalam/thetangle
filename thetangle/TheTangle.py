@@ -27,6 +27,11 @@ def delete(qq):
 
 
 class TangleExplorer():
+	"""
+	A simple example to understand the structure of The Tangle dataset in a Jazz (TNG series) server.
+
+	NOTE: The Tangle is not supposed to be accessed via http, but to serve for language research coded inside the Jazz server.
+	"""
 
 	def __init__(self):
 		pass
