@@ -103,6 +103,7 @@ class CompileTheTangle():
 		assert a.status_code == 201
 
 
+	def compile(self, keep_repositories = False):
 		delete('//lmdb/the_tangle')
 		a = get('//lmdb/the_tangle.new')
 		assert a.status_code == 200
