@@ -59,6 +59,28 @@ class TangleExplorer():
 		return [self.rex_dataset.sub('\\1', d) for d in ds]
 
 
+	def sections(self, dataset, urls_as_names = False):
+		"""
+		Returns a list with the section names for a given dataset.
+
+	    Arguments:
+		dataset		  -- The name of the dataset. (The url to its sections list is also accepted.)
+		urls_as_names -- If true, the returns the urls of the blocks list rather than just the section names.
+		"""
+
+		if not self.rex_dataset.match(dataset):
+			dataset = '//lmdb/the_tangle/%s_sections' % dataset
+
+		a = get(dataset)
+		assert a.status_code == 200
+
+		ss = a.text.split(',')
+		if urls_as_names:
+			return ss
+
+		return [self.rex_section.sub('\\2', s) for s in ss]
+
+
 
 
 class CompileTheTangle():
