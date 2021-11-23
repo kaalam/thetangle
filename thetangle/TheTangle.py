@@ -140,4 +140,4 @@ class CompileTheTangle():
 		delete('//deque/etl_stack')
 
 
-print(a)
+# CompileTheTangle().compile()
