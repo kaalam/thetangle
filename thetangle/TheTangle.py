@@ -105,6 +105,15 @@ class TangleExplorer():
 
 
 class CompileTheTangle():
+	"""
+	This class compiles the sources of The Tangle (downloaded from github) into the Jazz server LMDB persistence.
+
+	To do that, you have to run its .compile() method.
+
+	This must only be done once.
+
+	See https://kaalam.github.io/jazz_reference/reference_docker_tangle_server.html
+	"""
 
 	def __init__(self):
 		self.repos_path = '/home/jazz/jazz_dbg_mdb/github_repos'
@@ -181,6 +190,10 @@ class CompileTheTangle():
 
 
 	def compile(self, keep_repositories = False):
+		"""
+		This is the compiler. See https://kaalam.github.io/jazz_reference/reference_docker_tangle_server.html
+		"""
+
 		get('//deque/etl_stack.new')
 		if 'github_repos' not in self.ls('/home/jazz/jazz_dbg_mdb/')['key']:
 			print('The "github_repos" folder does not exist in the docker image!')
