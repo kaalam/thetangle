@@ -6,7 +6,7 @@ from Section import Section
 
 class GenericsKB:
 
-	def __init__(self, source_fn = etl_source + '/GenericsKB/GenericsKB.tsv', out_path  = etl_dest):
+	def __init__(self, source_fn = etl_source + '/GenericsKB/GenericsKB.tsv', out_path = etl_dest):
 		self.source_fn = source_fn
 		self.relations = Section('GenericsKB', 'relations', out_path + '/GenericsKB')
 		self.concepts  = Section('GenericsKB', 'concepts', out_path + '/GenericsKB', num_rows = 10000)
