@@ -123,10 +123,13 @@ class CompileTheTangle():
 		for repo in self.ls(self.repos_path)['key']:
 			self.compile_repo(repo)
 
+		for dataset in self.datasets:
+			for section in self.sections[dataset]:
+				self.write_block(section, self.blocks[dataset][section])
 
-	def __del__(self):
-		delete('//deque/etl_stack')
+			self.write_block(dataset, list(self.sections[dataset]))
 
+		self.write_block('//lmdb/the_tangle/datasets', list(self.datasets))
 
 ct = CompileTheTangle()
 
