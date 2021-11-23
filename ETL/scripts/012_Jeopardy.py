@@ -1,14 +1,5 @@
-import re
-
 from file_paths import etl_source, etl_dest
 from Section import Section
-
-
-def clean(s):
-	while s.find('  ') >=0: s = s.replace('  ', ' ')
-	while s.find(' ,') >=0: s = s.replace(' ,', ',')
-	while s.find(' .') >=0: s = s.replace(' .', '.')
-	return s.strip()
 
 
 class Jeopardy:
@@ -21,14 +12,6 @@ class Jeopardy:
 		self.category = Section('jeopardy', 'category', out_path + '/jeopardy')
 		self.question = Section('jeopardy', 'question', out_path + '/jeopardy')
 		self.answer	  = Section('jeopardy', 'answer',	out_path + '/jeopardy')
-
-
-	def inputs(self):
-		return [self.in_category, self.in_question, self.in_answer]
-
-
-	def outputs(self):
-		return [self.out_category, self.out_question, self.out_answer]
 
 
 	def build(self):
