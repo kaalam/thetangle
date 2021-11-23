@@ -3,7 +3,16 @@ import os, re
 
 class Section():
 
-	def __init__(self, dataset_name, section_name, path_blocks):
+	def __init__(self, dataset_name, section_name, path_blocks, num_rows = 1000):
+		self.num_rows = num_rows
+
+		if num_rows <= 1000:
+			self.format = '%s/%s_%s_%05i_%03i'
+		elif num_rows <= 10000:
+			self.format = '%s/%s_%s_%05i_%04i'
+		else:
+			raise(SyntaxError)
+
 		self.dataset_name = dataset_name
 		self.section_name = section_name
 		self.path_blocks  = path_blocks
@@ -16,7 +25,7 @@ class Section():
 
 
 	def block_name(self, last_idx):
-		return '%s/%s_%s_%05i_%03i' % (self.path_blocks, self.dataset_name, self.section_name, self.block_num, last_idx)
+		return self.format % (self.path_blocks, self.dataset_name, self.section_name, self.block_num, last_idx)
 
 
 	def close_block(self):
@@ -33,7 +42,7 @@ class Section():
 
 
 	def write_line(self, ln):
-		if self.block_idx == 1000:
+		if self.block_idx == self.num_rows:
 			self.close_block()
 
 		if self.block_idx == 0:
