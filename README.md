@@ -6,10 +6,14 @@
 This repository contains three different parts for **building**, **testing** and **exploring** The Tangle.
 
 
+## Downloading and compiling The Tangle
+
+The complete procedure is explained [here](https://kaalam.github.io/jazz_reference/reference_docker_tangle_server.html)
+
+
 ## Exploring The Tangle
 
-This is probably the only part of this repository you may need. You can just `pip install thetangle` and run examples from the folder
-`python_examples`
+You can just `pip install thetangle` and run examples from the folder `python_examples`.
 
 
 ## Building the package
@@ -34,8 +38,3 @@ cd ETL
 run `./test_cluster.sh`
 
 You will have to set up a two node cluster and configure the IPs and ports of your nodes in `cluster_tests/http_requests.py`.
-
-
-## Testing a Jazz node containing The Tangle
-
-run `./test_tangle.sh`
