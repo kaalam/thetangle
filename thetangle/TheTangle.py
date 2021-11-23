@@ -75,14 +75,19 @@ class CompileTheTangle():
 
 
 	def compile_dataset(self, repo, dataset):
-		print('  ', repo, ', ', dataset)
+		print('Compiling %s:' % dataset, end = ' ', flush = True)
 		ll = self.ls('%s/%s/data/%s' % (self.repos_path, repo, dataset))
+		ln = 0
 		for fn, typ in zip(ll['key'], ll['value']):
 			if typ == 'file':
 				assert self.rex.match(fn)
 				assert self.rex.sub('\\1', fn) == dataset
 				section = self.rex.sub('\\2', fn)
+				if ln % 10 == 0:
+					print(end = '.', flush = True)
+				ln += 1
 				self.push_block(repo, dataset, section, fn)
+		print()
 
 
 	def compile_repo(self, repo):
