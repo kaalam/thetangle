@@ -35,10 +35,6 @@ class CompileTheTangle():
 		self.datasets = set()
 		self.sections = dict()
 		self.blocks	  = dict()
-		get('//deque/etl_stack.new')
-		delete('//lmdb/the_tangle')
-		a = get('//lmdb/the_tangle.new')
-		assert a.status_code == 200
 
 
 	def ls(self, path):
@@ -93,7 +89,10 @@ class CompileTheTangle():
 				self.compile_dataset(repo, dataset)
 
 
-	def main(self):
+		delete('//lmdb/the_tangle')
+		a = get('//lmdb/the_tangle.new')
+		assert a.status_code == 200
+
 		for repo in self.ls(self.repos_path)['key']:
 			self.compile_repo(repo)
 
