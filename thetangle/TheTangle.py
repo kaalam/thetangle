@@ -131,10 +131,13 @@ class CompileTheTangle():
 
 		self.write_block('//lmdb/the_tangle/datasets', list(self.datasets))
 
-ct = CompileTheTangle()
+		if not keep_repositories:
+			print('Removing the source tree ...', end = ' ', flush = True)
+			delete('//file&%s;' % self.repos_path)
+			print('Ok.')
 
-ct.main()
+		print('\nDone.')
+		delete('//deque/etl_stack')
 
-a = ct.ls('/')
 
 print(a)
