@@ -1,3 +1,3 @@
 #!/bin/bash
 
-flake8 thetangle/ tests/
+flake8 thetangle/
