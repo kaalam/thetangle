@@ -1,25 +1,53 @@
-import re
+import os, re
+
+
+from file_paths import etl_source, etl_dest
+from Section import Section
 
 
 class gCide:
 
-	def __init__(self, in_path = '/home/jadmin/kaalam.etc/nlp/corpora/gcide/gcide-0.53/', out_path = './'):
-		self.in_path = in_path
-		self.out_definitions = out_path + 'gcide/definitions.txt'
-		self.out_synonyms = out_path + 'gcide/synonyms.txt'
-		self.out_words = out_path + 'indices/words.gcide'
-
-
-	def inputs(self):
-		return [self.in_path + '*']
-
-
-	def outputs(self):
-		return [self.out_definitions, self.out_synonyms, self.out_words]
+	def __init__(self, in_path = etl_source + '/gcide/gcide-0.53', out_path = etl_dest):
+		self.in_path	= in_path
+		self.entity		= Section('gCide', 'entity', out_path + '/gCide', num_rows = 10000)
+		self.definition	= Section('gCide', 'definition', out_path + '/gCide', num_rows = 10000)
 
 
 	def build(self):
-		pass
+		rex_fn	= re.compile('^CIDE\\..$')
+		rex_ent	= re.compile('.*<ent>(.*)</ent>.*$')
+		rex_def	= re.compile('.*<def>(.*)</def>.*$')
+		names	= os.listdir(self.in_path)
+		names.sort()
+
+		for fn in names:
+			if rex_fn.match(fn):
+				print(fn, ',', end = ' ', flush = True)
+				f_in = open('%s/%s' % (self.in_path, fn), 'r', encoding = 'ISO-8859-1')
+				line = f_in.readline()
+
+				ent = ''
+				dfn = ''
+				while line != '':
+					line = line.strip()
+					if line == '':
+						ent = ''
+						dfn = ''
+					else:
+						if rex_ent.match(line):
+							ent = rex_ent.sub('\\1', line)
+						if rex_def.match(line):
+							dfn = rex_def.sub('\\1', line)
+							if len(ent) > 0:
+								self.entity.write_line(ent)
+								self.definition.write_line(dfn)
+
+					line = f_in.readline()
+
+				f_in.close()
+
+		self.entity.close()
+		self.definition.close()
 
 
 c = gCide()
