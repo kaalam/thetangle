@@ -27,9 +27,9 @@ export TANGLE_ETL_SOURCE=~/kaalam.etc/nlp/corpora
 
 export TANGLE_ETL_DEST=../../tng-data-grammar/data
 
-	# ... python scripts/031_gCide.py
-	# ... python scripts/032_WordNet.py
-	# ... python scripts/033_LinkGrammar.py
+	python scripts/031_gCide.py
+	python scripts/032_WordNet.py
+	python scripts/033_LinkGrammar.py
 
 
 # Make raw data for Facts
@@ -53,20 +53,15 @@ export TANGLE_ETL_DEST=../../tng-data-qa/data
 
 export TANGLE_ETL_DEST=../../tng-data-readings/data
 
-	# python scripts/022_Gutenberg.py
-	# python scripts/023_OpenSubtitles.py
+	python scripts/022_Gutenberg.py
+	python scripts/023_OpenSubtitles.py
 
 
 # Make raw data for Wikipedia
 
 export TANGLE_ETL_DEST=../../tng-data-wikipedia/data
 
-	# ... python scripts/021_Wikipedia.py
-
-
-# Create the doc and the docker upload script
-
-	# ...
+	python scripts/021_Wikipedia.py
 
 
 # Push all the github repos
