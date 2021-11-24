@@ -15,8 +15,8 @@ class gCide:
 
 	def build(self):
 		rex_fn	= re.compile('^CIDE\\..$')
-		rex_ent	= re.compile('.*<ent>(.*)</ent>.*$')
-		rex_def	= re.compile('.*<def>(.*)</def>.*$')
+		rex_ent	= re.compile('^.*<ent>(.*)</ent>.*$')
+		rex_def	= re.compile('^.*<def>(.*)</def>.*$')
 		names	= os.listdir(self.in_path)
 		names.sort()
 
