@@ -8,8 +8,14 @@ set -e
 mkdir -p ../../tng-data-facts/data/ConceptNet
 mkdir -p ../../tng-data-facts/data/ascent
 mkdir -p ../../tng-data-facts/data/GenericsKB
+mkdir -p ../../tng-data-grammar/data/gCide
+mkdir -p ../../tng-data-grammar/data/WordNet
+mkdir -p ../../tng-data-grammar/data/LinkGrammar
 mkdir -p ../../tng-data-qa/data/squad20
 mkdir -p ../../tng-data-qa/data/jeopardy
+mkdir -p ../../tng-data-readings/data/OpenSubtitles
+mkdir -p ../../tng-data-readings/data/gutenberg
+mkdir -p ../../tng-data-wikipedia/data/wikipedia
 
 
 # Setup the environment
