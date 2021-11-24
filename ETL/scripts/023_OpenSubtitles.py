@@ -24,7 +24,7 @@ class OpenSubtitles:
 		line = f_in.readline()
 		while line is not None:
 			t_rl += 1
-			if t_rl % 100000 == 0:
+			if t_rl % 1000000 == 0:
 				print('%0.1f/%0.1fM,' % (len(lines)/1000000, t_rl/1000000), end = ' ', flush = True)
 
 			if len(line) == 0:
