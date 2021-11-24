@@ -1,43 +1,97 @@
 import os, re
 
 
+from lxml import etree
+
+
+from file_paths import etl_source, etl_dest
+from Section import Section
+
+
+class EchoTarget:
+
+	def __init__(self, out_path = etl_dest):
+		self.level	= 0
+		self.ent_id	= None
+		self.t_ll	= 0
+		self.form	= Section('WordNet', 'written-form', out_path + '/WordNet', num_rows = 10000)
+		self.pos	= Section('WordNet', 'part-of_speech', out_path + '/WordNet', num_rows = 10000)
+
+
+	def start(self, tag, attrib):
+		# print ('  '*self.level + ':>' + tag)
+		self.level += 1
+
+		if tag == 'LexicalEntry':
+			assert self.level == 3
+			self.ent_id = attrib['id']
+
+			return
+
+		if tag == 'Lemma':
+			assert self.level == 4
+			if 'writtenForm' in attrib and 'partOfSpeech' in attrib:
+				self.t_ll += 1
+				if self.t_ll % 10000 == 0:
+					print('%0.2fM,' % (self.t_ll/1000000), end = ' ', flush = True)
+
+				self.form.write_line(attrib['writtenForm'])
+				self.pos.write_line(attrib['partOfSpeech'])
+			else:
+				assert False
+
+			return
+
+		if tag == 'Sense':
+			assert self.level == 4
+			if 'id' in attrib and 'synset' in attrib:
+				""" This is a previous clarification that applies to the following edge. """
+			else:
+				assert False
+
+			return
+
+		if tag == 'SenseRelation':
+			assert self.level == 5
+			if 'relType' in attrib and 'target' in attrib:
+				""" This is an edge in the graph!!! """
+			else:
+				assert False
+
+			return
+
+
+	def end(self, tag):
+		self.level -= 1
+		if self.level < 3:
+			self.ent_id = None
+
+
+	def data(self, data):
+		pass
+
+
+	def close(self):
+		self.form.close()
+		self.pos.close()
+
+		return "closed!"
+
+
 class WordNet:
 
-	def __init__(self, in_path = '/home/jadmin/kaalam.etc/nlp/corpora/princeton-wordnet/dict/dbfiles/', out_path  = './'):
-		self.in_path = in_path
-		self.rel_types = out_path + 'wordnet/rel_type.txt'
-		self.relations = out_path + 'wordnet/relation.txt'
+	def __init__(self,
+				 source_fn = etl_source + '/english-wordnet/wn.xml',
+				 out_path  = etl_dest):
 
-
-	def inputs(self):
-		return [self.in_path + '*']
-
-
-	def outputs(self):
-		return [self.rel_types, self.relations]
+		self.source_fn = source_fn
+		self.out_path  = out_path
 
 
 	def build(self):
-		f_rt = open(self.rel_types, 'w')
-		f_rl = open(self.relations, 'w')
+		parser = etree.XMLParser(target = EchoTarget(self.out_path))
 
-		rex = re.compile('^[a-z]+\\.[a-z]+$')
-
-		for fn in os.listdir(self.in_path):
-			if rex.match(fn):
-				print(fn)
-				with open(self.in_path + fn, 'r') as fh:
-					line = fh.readline()
-					while line != '':
-						line = line.strip()
-						if line.startswith('{') and line.endswith('}'):
-							f_rt.write(fn + '\n')
-							f_rl.write(line + '\n')
-
-						line = fh.readline()
-
-		f_rt.close()
-		f_rl.close()
+		etree.parse(self.source_fn, parser)
 
 
 c = WordNet()
