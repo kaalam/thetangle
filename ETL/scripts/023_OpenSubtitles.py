@@ -1,24 +1,18 @@
 import re
 
+from file_paths import etl_source, etl_dest
+from Section import Section
+
 
 class OpenSubtitles:
 
-	def __init__(self, source_fn = '/home/jadmin/kaalam.etc/nlp/corpora/open_sub/monolingual.raw.en', out_path  = './'):
+	def __init__(self, source_fn = etl_source + '/open_sub/monolingual.raw.en', out_path = etl_dest):
 		self.source_fn = source_fn
-		self.text	   = out_path + 'open_subtitles/blocks.txt'
-
-
-	def inputs(self):
-		return [self.source_fn]
-
-
-	def outputs(self):
-		return [self.text]
+		self.text	   =  Section('OpenSubtitles', 'text', out_path + '/OpenSubtitles', num_rows = 10000)
 
 
 	def build(self):
 		f_in = open(self.source_fn, 'r')
-		f_oo = open(self.text, 'w')
 
 		rex_cl = re.compile('(:|\\(|]|^[^a-zA-Z]|^Presented|^Produced|^In association)')
 		rex_md = re.compile('.*[aeiou].*')
@@ -46,12 +40,16 @@ class OpenSubtitles:
 
 			line = f_in.readline()
 
+		print('\nSorting ...', end = ' ', flush = True)
 		wl = list(lines)
 		wl.sort()
-		f_oo.write('\n'.join(wl))
+		print('Ok.\nWriting ...', end = ' ', flush = True)
+		for w in wl:
+			self.text.write_line(w)
+		print('Ok.')
 
 		f_in.close()
-		f_oo.close()
+		self.text.close()
 
 
 c = OpenSubtitles()
