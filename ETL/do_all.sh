@@ -3,19 +3,34 @@
 set -e
 
 
-# Make all folders
+# Remove everything in all output folders
 
-mkdir -p ../../tng-data-facts/data/ConceptNet
-mkdir -p ../../tng-data-facts/data/ascent
-mkdir -p ../../tng-data-facts/data/GenericsKB
-mkdir -p ../../tng-data-grammar/data/gCide
-mkdir -p ../../tng-data-grammar/data/WordNet
-mkdir -p ../../tng-data-grammar/data/LinkGrammar
-mkdir -p ../../tng-data-qa/data/squad20
-mkdir -p ../../tng-data-qa/data/jeopardy
-mkdir -p ../../tng-data-readings/data/OpenSubtitles
-mkdir -p ../../tng-data-readings/data/gutenberg
-mkdir -p ../../tng-data-wikipedia/data/wikipedia
+rm -rf ../../tng-data-facts/data/ConceptNet
+rm -rf ../../tng-data-facts/data/ascent
+rm -rf ../../tng-data-facts/data/GenericsKB
+rm -rf ../../tng-data-grammar/data/gCide
+rm -rf ../../tng-data-grammar/data/WordNet
+rm -rf ../../tng-data-grammar/data/LinkGrammar
+rm -rf ../../tng-data-qa/data/squad20
+rm -rf ../../tng-data-qa/data/jeopardy
+rm -rf ../../tng-data-readings/data/OpenSubtitles
+rm -rf ../../tng-data-readings/data/gutenberg
+rm -rf ../../tng-data-wikipedia/data/wikipedia
+
+
+# Create all output folders
+
+mkdir ../../tng-data-facts/data/ConceptNet
+mkdir ../../tng-data-facts/data/ascent
+mkdir ../../tng-data-facts/data/GenericsKB
+mkdir ../../tng-data-grammar/data/gCide
+mkdir ../../tng-data-grammar/data/WordNet
+mkdir ../../tng-data-grammar/data/LinkGrammar
+mkdir ../../tng-data-qa/data/squad20
+mkdir ../../tng-data-qa/data/jeopardy
+mkdir ../../tng-data-readings/data/OpenSubtitles
+mkdir ../../tng-data-readings/data/gutenberg
+mkdir ../../tng-data-wikipedia/data/wikipedia
 
 
 # Setup the environment
