@@ -15,7 +15,7 @@ class EchoTarget:
 		self.ent_id	= None
 		self.t_ll	= 0
 		self.form	= Section('WordNet', 'written-form', out_path + '/WordNet', num_rows = 10000)
-		self.pos	= Section('WordNet', 'part-of_speech', out_path + '/WordNet', num_rows = 10000)
+		self.pos	= Section('WordNet', 'part-of-speech', out_path + '/WordNet', num_rows = 10000)
 
 
 	def start(self, tag, attrib):
