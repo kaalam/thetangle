@@ -22,7 +22,11 @@ class Raiders:
 			if t_ll % 10000 == 0:
 				print('%0.2fM,' % (t_ll/1000000), end = ' ', flush = True)
 
-			blk = json.loads(line)
+			try:
+				blk = json.loads(line)
+
+			except json.decoder.JSONDecodeError:
+				break
 
 			for post in blk['posts']:
 				if 'com' in post:
