@@ -10,15 +10,22 @@ class gCide:
 	def __init__(self, in_path = etl_source + '/gcide/gcide-0.53', out_path = etl_dest):
 		self.in_path	= in_path
 		self.entity		= Section('gCide', 'entity', out_path + '/gCide', num_rows = 10000)
+		self.pos		= Section('gCide', 'pos', out_path + '/gCide', num_rows = 10000)
 		self.definition	= Section('gCide', 'definition', out_path + '/gCide', num_rows = 10000)
 
 
 	def build(self):
-		rex_fn	= re.compile('^CIDE\\..$')
-		rex_ent	= re.compile('^.*<ent>(.*)</ent>.*$')
-		rex_def	= re.compile('^.*<def>(.*)</def>.*$')
-		names	= os.listdir(self.in_path)
+		rex_fn		 = re.compile('^CIDE\\..$')
+		rex_ent_any	 = re.compile('^<p><ent>(.*)</ent>.*$')
+		rex_ent_neat = re.compile('^<p><ent>([A-Za-z0-9\\-\' ]+)</ent>.*$')
+		rex_pos_any	 = re.compile('^.*<pos>(.*)</pos>.*$')
+		rex_pos_neat = re.compile('^.*<pos>([A-Za-z0-9,\\.& ]+)</pos>.*$')
+		rex_def		 = re.compile('^.*<def>(.*)</def>.*$')
+		rex_tag		 = re.compile('^(.*)</?[A-Za-z]+>(.*)$')
+		names		 = os.listdir(self.in_path)
 		names.sort()
+
+		pos_set = set()
 
 		for fn in names:
 			if rex_fn.match(fn):
@@ -26,27 +33,38 @@ class gCide:
 				f_in = open('%s/%s' % (self.in_path, fn), 'r', encoding = 'ISO-8859-1')
 				line = f_in.readline()
 
-				ent = ''
-				dfn = ''
+				ent = None
+				pos = '?'
 				while line != '':
 					line = line.strip()
-					if line == '':
-						ent = ''
-						dfn = ''
-					else:
-						if rex_ent.match(line):
-							ent = rex_ent.sub('\\1', line)
-						if rex_def.match(line):
-							dfn = rex_def.sub('\\1', line)
-							if len(ent) > 0:
-								self.entity.write_line(ent)
-								self.definition.write_line(dfn)
+
+					if rex_ent_any.match(line):
+						ent = None
+						if rex_ent_neat.match(line):
+							ent = rex_ent_neat.sub('\\1', line)
+
+					if rex_pos_any.match(line):
+						pos = '?'
+						if rex_pos_neat.match(line):
+							pos = rex_pos_neat.sub('\\1', line)
+							pos_set.add(pos)
+
+					if rex_def.match(line):
+						dfn = rex_def.sub('\\1', line)
+						if ent is not None:
+							while rex_tag.match(dfn):
+								dfn = rex_tag.sub('\\1\\2', dfn)
+
+							self.entity.write_line(ent)
+							self.pos.write_line(pos)
+							self.definition.write_line(dfn)
 
 					line = f_in.readline()
 
 				f_in.close()
 
 		self.entity.close()
+		self.pos.close()
 		self.definition.close()
 
 
