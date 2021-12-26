@@ -15,7 +15,7 @@ rm -rf ../../tng-data-qa/data/squad20
 rm -rf ../../tng-data-qa/data/jeopardy
 rm -rf ../../tng-data-readings/data/OpenSubtitles
 rm -rf ../../tng-data-readings/data/gutenberg
-rm -rf ../../tng-data-raiders/data/raiders
+rm -rf ../../tng-data-raiders/data/Raiders
 rm -rf ../../tng-data-wikipedia/data/wikipedia
 
 
@@ -31,7 +31,7 @@ mkdir ../../tng-data-qa/data/squad20
 mkdir ../../tng-data-qa/data/jeopardy
 mkdir ../../tng-data-readings/data/OpenSubtitles
 mkdir ../../tng-data-readings/data/gutenberg
-mkdir ../../tng-data-raiders/data/raiders
+mkdir ../../tng-data-raiders/data/Raiders
 mkdir ../../tng-data-wikipedia/data/wikipedia
 
 
