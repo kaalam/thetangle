@@ -8,7 +8,7 @@ class Raiders:
 
 	def __init__(self, source_fn = etl_source + '/RaidersOfTheLostKek/pol_062016-112019_labeled.json', out_path = etl_dest):
 		self.source_fn = source_fn
-		self.text	   = Section('Raiders', 'text', out_path + '/Raiders')
+		self.text	   = Section('Raiders', 'text', out_path + '/Raiders', num_rows = 5000)
 
 
 	def build(self):
