@@ -1,6 +1,6 @@
 # The Tangle: An entangled collection of English text for Jazz
 
-# 	Jazz (c) 2021-2022 kaalam.ai (The Authors of Jazz)
+# 	Jazz (c) 2021-2023 kaalam.ai (The Authors of Jazz)
 
 # 		Code is licensed under the Apache License, Version 2.0 http://www.apache.org/licenses/LICENSE-2.0
 #		Data is open source (see LICENSE_* files in kaalam/tng-data-* repositories for details.)
