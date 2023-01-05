@@ -54,10 +54,6 @@ class EchoTarget:
 		if self.state > 3:
 			assert self.state == 5
 
-			self.t_ll += 1
-			if self.t_ll % 10000 == 0:
-				print('%0.2fM,' % (self.t_ll/1000000), end = ' ', flush = True)
-
 			txt = self.text.split('\n')
 
 			if len(txt) > 3 and self.rex_head.match(txt[0]):
@@ -70,6 +66,10 @@ class EchoTarget:
 							break
 
 				if (len(parag) > 20):
+					self.t_ll += 1
+					if self.t_ll % 10000 == 0:
+						print('%0.2fM,' % (self.t_ll/1000000), end = ' ', flush = True)
+
 					self.titles.write_line(self.title)
 					self.in_short.write_line(short)
 					self.texts.write_line(parag)
