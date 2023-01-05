@@ -30,6 +30,10 @@ class EchoTarget:
 		self.texts		= Section('wikipedia', 'text', out_path + '/wikipedia', num_rows = 5000)
 		self.t_ll		= 0
 
+		self.titles.write_line('__en_wiki_date__')
+		self.in_short.write_line('20230101')
+		self.texts.write_line('enwiki-20230101-pages-articles-multistream.xml downloaded from https://dumps.wikimedia.org/enwiki/')
+
 
 	def start(self, tag, attrib):
 		tag = self.rex_tg.sub('\\1', tag)
