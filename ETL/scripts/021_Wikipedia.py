@@ -109,7 +109,7 @@ class EchoTarget:
 class Wikipedia:
 
 	def __init__(self,
-				 source_fn = etl_source + '/en_wiki_20211001/enwiki-20211001-pages-articles-multistream.xml',
+				 source_fn = etl_source + '/en_wiki_20230101/enwiki-20230101-pages-articles-multistream.xml',
 				 out_path  = etl_dest):
 
 		self.source_fn = source_fn
