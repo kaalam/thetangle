@@ -31,8 +31,8 @@ class EchoTarget:
 		self.t_ll		= 0
 
 		self.titles.write_line('__en_wiki_date__')
-		self.in_short.write_line('20230101')
-		self.texts.write_line('enwiki-20230101-pages-articles-multistream.xml downloaded from https://dumps.wikimedia.org/enwiki/')
+		self.in_short.write_line('20240101')
+		self.texts.write_line('enwiki-20240101-pages-articles-multistream.xml downloaded from https://dumps.wikimedia.org/enwiki/')
 
 
 	def start(self, tag, attrib):
@@ -113,7 +113,7 @@ class EchoTarget:
 class Wikipedia:
 
 	def __init__(self,
-				 source_fn = etl_source + '/en_wiki_20230101/enwiki-20230101-pages-articles-multistream.xml',
+				 source_fn = etl_source + '/en_wiki_20240101/enwiki-20240101-pages-articles-multistream.xml',
 				 out_path  = etl_dest):
 
 		self.source_fn = source_fn
