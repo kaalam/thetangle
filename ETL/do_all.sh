@@ -15,6 +15,7 @@ rm -rf ../../tng-data-qa/data/squad20
 rm -rf ../../tng-data-qa/data/jeopardy
 rm -rf ../../tng-data-readings/data/OpenSubtitles
 rm -rf ../../tng-data-readings/data/gutenberg
+rm -rf ../../tng-data-raiders/data/Raiders
 rm -rf ../../tng-data-wikipedia/data/wikipedia
 
 
@@ -30,6 +31,7 @@ mkdir ../../tng-data-qa/data/squad20
 mkdir ../../tng-data-qa/data/jeopardy
 mkdir ../../tng-data-readings/data/OpenSubtitles
 mkdir ../../tng-data-readings/data/gutenberg
+mkdir ../../tng-data-raiders/data/Raiders
 mkdir ../../tng-data-wikipedia/data/wikipedia
 
 
@@ -71,6 +73,10 @@ export TANGLE_ETL_DEST=../../tng-data-readings/data
 	python scripts/022_Gutenberg.py
 	python scripts/023_OpenSubtitles.py
 
+export TANGLE_ETL_DEST=../../tng-data-raiders/data
+
+	python scripts/024_RaidersOfLostKek.py
+
 
 # Make raw data for Wikipedia
 
@@ -108,6 +114,14 @@ cd "$etl_pwd" || return 1
 etl_pwd=$(pwd)
 
 cd ../../tng-data-readings || return 1
+
+./compress_clean_push.sh
+
+cd "$etl_pwd" || return 1
+
+etl_pwd=$(pwd)
+
+cd ../../tng-data-raiders || return 1
 
 ./compress_clean_push.sh
 

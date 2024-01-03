@@ -1,3 +1,11 @@
+# The Tangle: An entangled collection of English text for Jazz
+
+# 	Jazz (c) 2021-2024 kaalam.ai (The Authors of Jazz)
+
+# 		Code is licensed under the Apache License, Version 2.0 http://www.apache.org/licenses/LICENSE-2.0
+#		Data is open source (see LICENSE_* files in kaalam/tng-data-* repositories for details.)
+
+
 import re
 
 from lxml import etree
@@ -21,6 +29,10 @@ class EchoTarget:
 		self.in_short	= Section('wikipedia', 'in-short', out_path + '/wikipedia', num_rows = 5000)
 		self.texts		= Section('wikipedia', 'text', out_path + '/wikipedia', num_rows = 5000)
 		self.t_ll		= 0
+
+		self.titles.write_line('__en_wiki_date__')
+		self.in_short.write_line('20230101')
+		self.texts.write_line('enwiki-20230101-pages-articles-multistream.xml downloaded from https://dumps.wikimedia.org/enwiki/')
 
 
 	def start(self, tag, attrib):
@@ -46,10 +58,6 @@ class EchoTarget:
 		if self.state > 3:
 			assert self.state == 5
 
-			self.t_ll += 1
-			if self.t_ll % 10000 == 0:
-				print('%0.2fM,' % (self.t_ll/1000000), end = ' ', flush = True)
-
 			txt = self.text.split('\n')
 
 			if len(txt) > 3 and self.rex_head.match(txt[0]):
@@ -62,6 +70,10 @@ class EchoTarget:
 							break
 
 				if (len(parag) > 20):
+					self.t_ll += 1
+					if self.t_ll % 10000 == 0:
+						print('%0.2fM,' % (self.t_ll/1000000), end = ' ', flush = True)
+
 					self.titles.write_line(self.title)
 					self.in_short.write_line(short)
 					self.texts.write_line(parag)
@@ -101,7 +113,7 @@ class EchoTarget:
 class Wikipedia:
 
 	def __init__(self,
-				 source_fn = etl_source + '/en_wiki_20211001/enwiki-20211001-pages-articles-multistream.xml',
+				 source_fn = etl_source + '/en_wiki_20230101/enwiki-20230101-pages-articles-multistream.xml',
 				 out_path  = etl_dest):
 
 		self.source_fn = source_fn
