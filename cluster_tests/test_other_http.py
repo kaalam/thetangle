@@ -20,7 +20,7 @@ def test_OtherHttp():
 	a = options('///nX//base/entity/key.text')
 	assert a.status_code == 204 and a.headers['Allow'] == 'HEAD,GET,PUT,OPTIONS'
 
-	a = options('/cookies.html')
+	a = options('/__AUTOLOAD__.md')
 	assert a.status_code == 204 and a.headers['Allow'] == 'HEAD,GET,OPTIONS'
 
 	a = options('/qwuhckies.html')
@@ -34,7 +34,7 @@ def test_OtherHttp():
 		post('//aa/bb/cc', {'aaa' : 'xxx'})
 
 	with pytest.raises(requests.exceptions.ConnectionError):
-		put('/cookies.html', '123')
+		put('/__AUTOLOAD__.md', '123')
 
 	a = put('//ba se/ent/ky', '123')
 	assert a.status_code == 400
