@@ -74,7 +74,7 @@ def test_ChannelFile():
 	assert a.status_code == 200
 
 	a = get('//deque/my_stack/~last=//file&/tmp/new_folder;')
-	assert a.status_code == 502
+	assert a.status_code == 400
 
 	a = delete('//file&/tmp/new_folder;')
 	assert isinstance(a, requests.models.Response)

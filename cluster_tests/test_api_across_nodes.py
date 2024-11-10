@@ -224,7 +224,7 @@ def test_AcrossNodesAllRemoteBoth():
 	assert a.status_code == 404
 
 	a = get('//deque/stack_01/slice-4=///424x4//deque/stack_02/tensor[//deque/stack_01/fi_fi]')
-	assert a.status_code == 404
+	assert a.status_code == 400
 
 	tp = get('///424x4//bash/exec/(&echo "2 + 2 = $(expr 2 + 2)")')
 	assert tp.status_code == 200
@@ -308,7 +308,7 @@ def test_AcrossNodesAllRemoteBoth():
 	assert a.status_code == 200 and a.text == '[[2, 2], [3, 3]]'
 
 	a = get('//deque/stack_01/~last=///424x4//deque/stack_02/mat_2x2(//bb/ee/kk)')
-	assert a.status_code == 404
+	assert a.status_code == 400
 
 	a = get('///424x4//deque/stack_02/mat_2x2(//bb/ee/kk)')
 	assert a.status_code == 404
