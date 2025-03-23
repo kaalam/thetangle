@@ -1,3 +1,4 @@
 .vscode/
 twine_credentials.sh
 upload_markdown/
+_tags_/
