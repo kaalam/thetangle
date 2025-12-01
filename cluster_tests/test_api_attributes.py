@@ -52,37 +52,37 @@ def test_PutGetRemoteAttributes():
 	p = get('/hello/index.html', remote = True)
 	assert p.status_code == 404 or p.status_code == 502
 
-	n = get('///424x4//lmdb/www/blk_blk123=&<html>\n<body>\n<h3>\nHello World!\n</h3>\n</body>\n</html>\n;')
+	n = get('///Troppo//lmdb/www/blk_blk123=&<html>\n<body>\n<h3>\nHello World!\n</h3>\n</body>\n</html>\n;')
 	assert n.status_code == 200
 
-	a = get('///424x4//lmdb/www/blk_blk123')
+	a = get('///Troppo//lmdb/www/blk_blk123')
 	assert a.status_code == 200 and a.text[0:6] == '<html>'
 
-	a = get('///424x4//lmdb/www/blk_blk123.attribute(4)')
+	a = get('///Troppo//lmdb/www/blk_blk123.attribute(4)')
 	assert a.status_code == 404
 
-	a = get('///424x4//lmdb/www/blk_blk123.attribute(4)=&text/html;')
+	a = get('///Troppo//lmdb/www/blk_blk123.attribute(4)=&text/html;')
 	assert a.status_code == 200
 
-	a = get('///424x4//lmdb/www/blk_blk123.attribute(4)')
+	a = get('///Troppo//lmdb/www/blk_blk123.attribute(4)')
 	assert a.status_code == 200 and a.text == 'text/html'
 
-	a = get('///424x4//lmdb/www/blk_blk123.attribute(6)=&en-us;')
+	a = get('///Troppo//lmdb/www/blk_blk123.attribute(6)=&en-us;')
 	assert a.status_code == 200
 
-	a = get('///424x4//lmdb/www/blk_blk123.attribute(6)')
+	a = get('///Troppo//lmdb/www/blk_blk123.attribute(6)')
 	assert a.status_code == 200 and a.text == 'en-us'
 
-	a = get('///424x4//lmdb/www/blk_blk123.attribute(5)=&/hello/index.html;')
+	a = get('///Troppo//lmdb/www/blk_blk123.attribute(5)=&/hello/index.html;')
 	assert a.status_code == 200
 
-	a = get('///424x4//lmdb/www/blk_blk123.attribute(5)')
+	a = get('///Troppo//lmdb/www/blk_blk123.attribute(5)')
 	assert a.status_code == 200 and a.text == '/hello/index.html'
 
 	p = get('/hello/index.html', remote = True)
 	assert p.status_code == 200 and p.text[0:6] == '<html>'
 
-	a = delete('///424x4//lmdb/www/blk_blk123')
+	a = delete('///Troppo//lmdb/www/blk_blk123')
 	assert a.status_code == 200
 
 	p = get('/hello/index.html', remote = True)

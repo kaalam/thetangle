@@ -4,16 +4,16 @@ from http_requests import get, put, delete
 
 
 def test_AcrossNodesBasic():
-	d = get('///424x4//lmdb/test_dbi.new')
+	d = get('///Troppo//lmdb/test_dbi.new')
 	assert d.status_code == 200
 
-	n = put('///424x4//lmdb/test_dbi/twenty', 'What is 5*4?')
+	n = put('///Troppo//lmdb/test_dbi/twenty', 'What is 5*4?')
 	assert n.status_code == 201
 
-	n = put('///424x4//lmdb/test_dbi/five', 'What is 7 - 2?')
+	n = put('///Troppo//lmdb/test_dbi/five', 'What is 7 - 2?')
 	assert n.status_code == 201
 
-	a = get('///424x4//lmdb/test_dbi/twenty')
+	a = get('///Troppo//lmdb/test_dbi/twenty')
 	assert a.status_code == 200 and a.text == 'What is 5*4?'
 
 	a = get('//lmdb/test_dbi/twenty', remote = True)
@@ -22,13 +22,13 @@ def test_AcrossNodesBasic():
 	a = get('//lmdb/test_dbi/five', remote = True)
 	assert a.status_code == 200 and a.text == 'What is 7 - 2?'
 
-	a = get('///424x4//lmdb/test_dbi/five')
+	a = get('///Troppo//lmdb/test_dbi/five')
 	assert a.status_code == 200 and a.text == 'What is 7 - 2?'
 
-	d = delete('///424x4//lmdb/test_dbi/twenty')
+	d = delete('///Troppo//lmdb/test_dbi/twenty')
 	assert d.status_code == 200
 
-	d = delete('///424x4//lmdb/test_dbi/zx81')
+	d = delete('///Troppo//lmdb/test_dbi/zx81')
 	assert d.status_code == 404
 
 	d = delete('//zz/test_dbi/zx81')
@@ -43,19 +43,19 @@ def test_AcrossNodesBasic():
 	a = get('//lmdb/test_dbi/twenty', remote = True)
 	assert a.status_code == 404
 
-	a = get('///424x4//lmdb/test_dbi/twenty')
+	a = get('///Troppo//lmdb/test_dbi/twenty')
 	assert a.status_code == 404
 
-	a = get('///424x4//lmdb/test_dbi/five')
+	a = get('///Troppo//lmdb/test_dbi/five')
 	assert a.status_code == 200 and a.text == 'What is 7 - 2?'
 
-	d = delete('///424x4//lmdb/test_dbi')
+	d = delete('///Troppo//lmdb/test_dbi')
 	assert d.status_code == 200
 
-	a = get('///424x4//lmdb/test_dbi/twenty')
+	a = get('///Troppo//lmdb/test_dbi/twenty')
 	assert a.status_code == 404
 
-	a = get('///424x4//lmdb/test_dbi/five')
+	a = get('///Troppo//lmdb/test_dbi/five')
 	assert a.status_code == 404
 
 
@@ -63,7 +63,7 @@ def test_AcrossNodesAllRemoteRight():
 	q = get('//deque/my_stack.new')
 	assert q.status_code == 200
 
-	q = get('///424x4//deque/my_stack.new')
+	q = get('///Troppo//deque/my_stack.new')
 	assert q.status_code == 200
 
 	tupl = '("weights" : [[17, 170], [112, 54], [207, 149]], "author" : ["Billy"], "score" : [0.95])'
@@ -86,7 +86,7 @@ def test_AcrossNodesAllRemoteRight():
 	a = get('//deque/my_stack/~plast.text')
 	assert a.status_code == 200 and a.text == '[9.499999999999999556e-01]'
 
-	a = get('///424x4//lmdb/www/a_tupl=//lmdb/www/a_tupl')
+	a = get('///Troppo//lmdb/www/a_tupl=//lmdb/www/a_tupl')
 	assert a.status_code == 200
 
 	b = get('//lmdb/www/a_tupl')
@@ -95,7 +95,7 @@ def test_AcrossNodesAllRemoteRight():
 	r = get('//lmdb/www/a_tupl', remote = True)
 	assert r.status_code == 200 and b.text == r.text
 
-	t = get('///424x4//lmdb/www/a_tupl')
+	t = get('///Troppo//lmdb/www/a_tupl')
 	assert t.status_code == 200 and b.text == t.text
 
 	b = get('//lmdb/www/a_tupl:weights')
@@ -104,7 +104,7 @@ def test_AcrossNodesAllRemoteRight():
 	r = get('//lmdb/www/a_tupl:weights', remote = True)
 	assert r.status_code == 200 and b.text[0:7] == r.text[0:7] and len(b.content) == len(r.content)		# Bytes before .created
 
-	r = get('///424x4//lmdb/www/a_tupl:weights')
+	r = get('///Troppo//lmdb/www/a_tupl:weights')
 	assert r.status_code == 200 and b.text[0:7] == r.text[0:7] and len(b.content) == len(r.content)		# Bytes before .created
 
 	a = get('//deque/my_stack/~last=//lmdb/www/a_tupl:weights', remote = True)
@@ -122,16 +122,16 @@ def test_AcrossNodesAllRemoteRight():
 	a = get('//deque/my_stack/~plast.text', remote = True)
 	assert a.status_code == 200 and a.text == '[9.499999999999999556e-01]'
 
-	a = get('//deque/my_stack/~last=///424x4//lmdb/www/a_tupl:weights')
+	a = get('//deque/my_stack/~last=///Troppo//lmdb/www/a_tupl:weights')
 	assert a.status_code == 200
 
 	a = get('//deque/my_stack/~plast.text')
 	assert a.status_code == 200 and a.text == '[[17, 170], [112, 54], [207, 149]]'
 
-	a = get('///424x4//lmdb/www/a_tupl:author')
+	a = get('///Troppo//lmdb/www/a_tupl:author')
 	assert a.status_code == 200 and a.text == 'Billy'
 
-	a = put('///424x4//lmdb/www/a_tupl.raw', tupl)
+	a = put('///Troppo//lmdb/www/a_tupl.raw', tupl)
 	assert a.status_code == 201
 
 	b = get('//lmdb/www/a_tupl')
@@ -140,7 +140,7 @@ def test_AcrossNodesAllRemoteRight():
 	r = get('//lmdb/www/a_tupl', remote = True)
 	assert r.status_code == 200 and b.text[0:7] == r.text[0:7] and len(b.content) == len(r.content)		# Bytes before .created
 
-	t = get('///424x4//lmdb/www/a_tupl')
+	t = get('///Troppo//lmdb/www/a_tupl')
 	assert t.status_code == 200 and b.text[0:7] == t.text[0:7] and len(b.content) == len(t.content)		# Bytes before .created
 
 	b = get('//lmdb/www/a_tupl:weights')
@@ -149,7 +149,7 @@ def test_AcrossNodesAllRemoteRight():
 	r = get('//lmdb/www/a_tupl:weights', remote = True)
 	assert r.status_code == 200 and b.text[0:7] == r.text[0:7] and len(b.content) == len(r.content)		# Bytes before .created
 
-	r = get('///424x4//lmdb/www/a_tupl:weights')
+	r = get('///Troppo//lmdb/www/a_tupl:weights')
 	assert r.status_code == 200 and b.text[0:7] == r.text[0:7] and len(b.content) == len(r.content)		# Bytes before .created
 
 	a = get('//deque/my_stack/~last=//lmdb/www/a_tupl:weights', remote = True)
@@ -167,19 +167,19 @@ def test_AcrossNodesAllRemoteRight():
 	a = get('//deque/my_stack/~plast.text', remote = True)
 	assert a.status_code == 200 and a.text == '[9.499999999999999556e-01]'
 
-	a = get('//deque/my_stack/~last=///424x4//lmdb/www/a_tupl:weights')
+	a = get('//deque/my_stack/~last=///Troppo//lmdb/www/a_tupl:weights')
 	assert a.status_code == 200
 
 	a = get('//deque/my_stack/~plast.text')
 	assert a.status_code == 200 and a.text == '[[17, 170], [112, 54], [207, 149]]'
 
-	a = get('///424x4//lmdb/www/a_tupl:author')
+	a = get('///Troppo//lmdb/www/a_tupl:author')
 	assert a.status_code == 200 and a.text == 'Billy'
 
 	q = delete('//deque/my_stack')
 	assert q.status_code == 200
 
-	q = delete('///424x4//deque/my_stack')
+	q = delete('///Troppo//deque/my_stack')
 	assert q.status_code == 200
 
 
@@ -187,10 +187,10 @@ def test_AcrossNodesAllRemoteBoth():
 	q = get('//deque/stack_01.new')
 	assert q.status_code == 200
 
-	q = get('///424x4//deque/stack_02.new')
+	q = get('///Troppo//deque/stack_02.new')
 	assert q.status_code == 200
 
-	a = put('///424x4//deque/stack_02/tensor.raw', '[[1,1], [2,2], [3,3]]')
+	a = put('///Troppo//deque/stack_02/tensor.raw', '[[1,1], [2,2], [3,3]]')
 	assert a.status_code == 201
 
 	a = put('//deque/stack_01/tt.raw', '[[1,4], [2,5], [3,6]]')
@@ -199,34 +199,34 @@ def test_AcrossNodesAllRemoteBoth():
 	a = put('//deque/stack_02/filter.raw', '[0,1]', remote = True)
 	assert a.status_code == 201
 
-	a = put('///424x4//deque/stack_02/filter.raw', '[0,1]')
+	a = put('///Troppo//deque/stack_02/filter.raw', '[0,1]')
 	assert a.status_code == 201
 
 	a = put('//deque/stack_01/fi_fi.raw', '[1]')
 	assert a.status_code == 201
 
-	a = get('//deque/stack_01/tensor-src=///424x4//deque/stack_02/tensor.text')
+	a = get('//deque/stack_01/tensor-src=///Troppo//deque/stack_02/tensor.text')
 	assert a.status_code == 200
 
-	a = get('//deque/stack_01/slice-1=///424x4//deque/stack_02/tensor[//deque/stack_02/filter]')
+	a = get('//deque/stack_01/slice-1=///Troppo//deque/stack_02/tensor[//deque/stack_02/filter]')
 	assert a.status_code == 200
 
-	a = get('//deque/stack_01/slice-2=///424x4//deque/stack_02/tensor[&[0]]')
+	a = get('//deque/stack_01/slice-2=///Troppo//deque/stack_02/tensor[&[0]]')
 	assert a.status_code == 200
 
-	a = get('//deque/stack_01/slice-3=//deque/stack_01/tt[///424x4//deque/stack_02/filter]')
+	a = get('//deque/stack_01/slice-3=//deque/stack_01/tt[///Troppo//deque/stack_02/filter]')
 	assert a.status_code == 400
 
-	a = get('///424x4//deque/stack_02/tensor[//deque/stack_01/fi_fi]')
+	a = get('///Troppo//deque/stack_02/tensor[//deque/stack_01/fi_fi]')
 	assert a.status_code == 404
 
 	a = get('//deque/stack_02/tensor[//deque/stack_01/fi_fi]', remote = True)
 	assert a.status_code == 404
 
-	a = get('//deque/stack_01/slice-4=///424x4//deque/stack_02/tensor[//deque/stack_01/fi_fi]')
+	a = get('//deque/stack_01/slice-4=///Troppo//deque/stack_02/tensor[//deque/stack_01/fi_fi]')
 	assert a.status_code == 400
 
-	tp = get('///424x4//bash/exec/(&echo "2 + 2 = $(expr 2 + 2)")')
+	tp = get('///Troppo//bash/exec/(&echo "2 + 2 = $(expr 2 + 2)")')
 	assert tp.status_code == 200
 
 	a = put('//deque/stack_01/~last', tp.content)
@@ -235,22 +235,22 @@ def test_AcrossNodesAllRemoteBoth():
 	a = get('//deque/stack_01/~plast.text')
 	assert a.status_code == 200
 
-	a = get('///424x4//deque/stack_02/result=//bash/exec/(&echo "2 + 2 = $(expr 2 + 2)")')
+	a = get('///Troppo//deque/stack_02/result=//bash/exec/(&echo "2 + 2 = $(expr 2 + 2)")')
 	assert a.status_code == 200
 
-	a = get('///424x4//deque/stack_02/result.text')
+	a = get('///Troppo//deque/stack_02/result.text')
 	assert a.status_code == 200 and a.text == '["2 + 2 = 4\\n"]'
 
-	a = get('//deque/stack_01/result=///424x4//bash/exec/(&echo "2 + 2 = $(expr 2 + 2)")')
+	a = get('//deque/stack_01/result=///Troppo//bash/exec/(&echo "2 + 2 = $(expr 2 + 2)")')
 	assert a.status_code == 200
 
 	a = get('//deque/stack_01/result.text')
 	assert a.status_code == 200
 
-	a = get('///424x4//deque/stack_02/result=///424x4//bash/exec/(&echo "2 + 2 = $(expr 2 + 2)")')
+	a = get('///Troppo//deque/stack_02/result=///Troppo//bash/exec/(&echo "2 + 2 = $(expr 2 + 2)")')
 	assert a.status_code == 200
 
-	a = get('///424x4//deque/stack_02/result.text')
+	a = get('///Troppo//deque/stack_02/result.text')
 	assert a.status_code == 200 and a.text == '["2 + 2 = 4\\n"]'
 
 	a = get('//deque/stack_01/slice-1.text')
@@ -265,64 +265,64 @@ def test_AcrossNodesAllRemoteBoth():
 	tp = get('//bash/exec/(&echo "2 + 2 = $(expr 2 + 2)")')
 	assert tp.status_code == 200
 
-	a = put('///424x4//deque/stack_02/~first', tp.content)
+	a = put('///Troppo//deque/stack_02/~first', tp.content)
 	assert a.status_code == 201
 
-	a = get('///424x4//deque/stack_02/~pfirst.text')
+	a = get('///Troppo//deque/stack_02/~pfirst.text')
 	assert a.status_code == 200 and a.text == '["2 + 2 = 4\\n"]'
 
-	tp = get('///424x4//deque/stack_02/tensor[//deque/stack_02/filter]')
+	tp = get('///Troppo//deque/stack_02/tensor[//deque/stack_02/filter]')
 	assert tp.status_code == 200
 
-	a = put('///424x4//deque/stack_02/~first', tp.content)
+	a = put('///Troppo//deque/stack_02/~first', tp.content)
 	assert a.status_code == 201
 
-	a = get('///424x4//deque/stack_02/~pfirst.text')
+	a = get('///Troppo//deque/stack_02/~pfirst.text')
 	assert a.status_code == 200 and a.text == '[[1, 1], [2, 2]]'
 
-	tp = get('///424x4//deque/stack_02/tensor[&[1,2]]')
+	tp = get('///Troppo//deque/stack_02/tensor[&[1,2]]')
 	assert tp.status_code == 200
 
-	a = put('///424x4//deque/stack_02/~first', tp.content)
+	a = put('///Troppo//deque/stack_02/~first', tp.content)
 	assert a.status_code == 201
 
-	a = get('///424x4//deque/stack_02/~pfirst.text')
+	a = get('///Troppo//deque/stack_02/~pfirst.text')
 	assert a.status_code == 200 and a.text == '[[2, 2], [3, 3]]'
 
-	a = put('///424x4//deque/stack_02/mat_2x2', '[[2, 2], [3, 3]]')
+	a = put('///Troppo//deque/stack_02/mat_2x2', '[[2, 2], [3, 3]]')
 	assert a.status_code == 201
 
-	tp = get('///424x4//deque/stack_02/mat_2x2.raw')
+	tp = get('///Troppo//deque/stack_02/mat_2x2.raw')
 	assert tp.status_code == 200
 
-	a = put('///424x4//deque/stack_02/~first', tp.content)
+	a = put('///Troppo//deque/stack_02/~first', tp.content)
 	assert a.status_code == 201
 
-	a = get('///424x4//deque/stack_02/~pfirst.text')
+	a = get('///Troppo//deque/stack_02/~pfirst.text')
 	assert a.status_code == 200 and a.text == '[[2, 2], [3, 3]]'
 
-	a = get('//deque/stack_01/~last=///424x4//deque/stack_02/mat_2x2.raw')
+	a = get('//deque/stack_01/~last=///Troppo//deque/stack_02/mat_2x2.raw')
 	assert tp.status_code == 200
 
 	a = get('//deque/stack_01/~plast.text')
 	assert a.status_code == 200 and a.text == '[[2, 2], [3, 3]]'
 
-	a = get('//deque/stack_01/~last=///424x4//deque/stack_02/mat_2x2(//bb/ee/kk)')
+	a = get('//deque/stack_01/~last=///Troppo//deque/stack_02/mat_2x2(//bb/ee/kk)')
 	assert a.status_code == 400
 
-	a = get('///424x4//deque/stack_02/mat_2x2(//bb/ee/kk)')
+	a = get('///Troppo//deque/stack_02/mat_2x2(//bb/ee/kk)')
 	assert a.status_code == 404
 
 	a = get('//deque/stack_02/mat_2x2(//bb/ee/kk)', remote = True)
 	assert a.status_code == 404
 
-	a = get('//deque/stack_01/~last=///424x4//deque/stack_02/tensor')
+	a = get('//deque/stack_01/~last=///Troppo//deque/stack_02/tensor')
 	assert tp.status_code == 200
 
 	a = get('//deque/stack_01/~plast.text')
 	assert a.status_code == 200 and a.text == '[[1, 1], [2, 2], [3, 3]]'
 
-	a = get('//deque/stack_01/~last=///424x4//http&http://127.0.0.1:5000/test/capital/Spain;')
+	a = get('//deque/stack_01/~last=///Troppo//http&http://127.0.0.1:5000/test/capital/Spain;')
 	assert tp.status_code == 200
 
 	a = get('//deque/stack_01/~plast.text')
