@@ -1,6 +1,6 @@
-import pytest, requests
-
 from http_requests import get, put, delete
+
+import requests								# Must be imported after possibly patching it by http_requests.
 
 
 def test_Serialization():

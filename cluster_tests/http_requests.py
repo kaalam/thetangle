@@ -1,4 +1,50 @@
-import re
+def patch_broken_requests(force_write = False):
+	import os, re, site
+
+	for path in [site.getusersitepackages()] + site.getsitepackages():
+		fn = '%s/requests/adapters.py' % path
+		if os.path.isfile(fn):
+			break
+
+	with open(fn, 'r') as f:
+		txt = f.read().splitlines()
+
+	rex_st	= re.compile('^[ ]+url = request.path_url$')
+	rex_end = re.compile('^[ ]+return url$')
+
+	found	 = 0
+	lines	 = 0
+	patch	 = False
+	modified = False
+	for i, s in enumerate(txt):
+		if rex_st.match(s):
+			assert found == 0
+			found += 1
+			patch = True
+			continue
+
+		if patch:
+			assert lines < 7
+			lines += 1
+
+			if rex_end.match(s):
+				patch = False
+				continue
+
+			if force_write or not s.startswith('#'):
+				txt[i] = '#_patched_out_# %s' % s.replace('#_patched_out_# ', '')
+				modified = True
+
+	assert found == 1
+
+	if modified:
+		with open(fn, 'w') as f:
+			f.write('\n'.join(txt))
+
+	return modified
+
+
+patch_broken_requests()	# Must be before any requests import.
 
 import requests as http
 
@@ -37,46 +83,3 @@ def head(qq):
 
 def post(qq, tt):
 	return http.post(SERVER_URL + qq, data = tt)
-
-
-def patch_broken_requests():
-	import requests.adapters
-	fn = requests.adapters.__file__
-
-	with open(fn, 'r') as f:
-		txt = f.read().splitlines()
-
-	rex_st = re.compile('^[ ]+url = request.path_url$')
-	rex_end = re.compile('^[ ]+return url$')
-
-	found	 = 0
-	lines	 = 0
-	patch	 = False
-	modified = False
-	for i, s in enumerate(txt):
-		if rex_st.match(s):
-			assert found == 0
-			found += 1
-			patch = True
-			continue
-
-		if patch:
-			assert lines < 7
-			lines += 1
-
-			if rex_end.match(s):
-				patch = False
-				continue
-
-			if not s.startswith('#'):
-				txt[i] = '# %s' % s
-				modified = True
-
-	assert found == 1
-
-	if modified:
-		with open(fn, 'w') as f:
-			f.write('\n'.join(txt))
-
-
-patch_broken_requests()

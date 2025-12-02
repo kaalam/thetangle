@@ -1,5 +1,3 @@
-import pytest, requests
-
 from http_requests import get, put, delete
 
 

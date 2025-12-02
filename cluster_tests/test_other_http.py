@@ -1,6 +1,8 @@
-import pytest, requests
+import pytest
 
 from http_requests import get, put, delete, options, head, post
+
+import requests		# Must be imported after possibly patching it by http_requests.
 
 
 def test_OtherHttp():
