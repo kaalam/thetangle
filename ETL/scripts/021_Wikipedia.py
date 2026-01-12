@@ -20,7 +20,7 @@ class EchoTarget:
 	def __init__(self, out_path = etl_dest):
 		self.level		= 0
 		self.state		= 0
-		self.rex_tg		= re.compile("^\\{http://www.mediawiki.org/xml/export-0.10/\\}([a-z0-9]+)$")
+		self.rex_tg		= re.compile("^\\{http://www.mediawiki.org/xml/export-0.11/\\}([a-z0-9]+)$")
 		self.rex_head	= re.compile('^{{[Ss]hort description\\|(.*)}}$')
 		self.rex_text	= re.compile("^(==.*==|[A-Z].*|'''.*)$")
 		self.title		= None
